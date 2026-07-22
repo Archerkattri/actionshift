@@ -56,7 +56,7 @@ Raw backbone, hidden contract, no adaptation. This is the brittleness number.
 
 **Imitation is not more robust than RL to hidden action-interface shift — it is equally brittle.**
 A competent Diffusion Policy loses essentially all of its success (0.58/0.67 → ~0.00) the instant the
-action interface is permuted/signed/scaled/re-framed, landing in the same 0.000–0.005 floor as the
+action interface is permuted/signed/scaled/re-framed, landing in the same 0.000–0.007 floor as the
 frozen PPO backbones. The failure is interface-semantic, not policy-class-specific: a smooth
 demo-imitating chunked policy has no more inherent immunity than a reactive RL policy.
 

@@ -105,7 +105,7 @@ Next motivated method: probe-augmented recurrent identification. Details:
 achieves 0.97/0.98 permutation/sign supervised accuracy on the lag-0/random-excitation stratum
 (pre-fix scorer; the current post-fix OVERALL figures are 0.80/0.84 across all strata — cite those for aggregate claims), and
 the run surfaced two real ActionABI defects (a lag-observable scorer bug; calibration not
-robust to systematic response-model bias). Details: `../actionabi/reports/labeled_sim_traces.md`.
+robust to systematic response-model bias). Details: `actionabi/reports/labeled_sim_traces.md`.
 
 **Positioning.** Independent literature check (Related work section of README.md; full matrix in git history: docs/positioning_litcheck.md): no prior benchmark
 isolating compositional action-interface shift found (checked vs RoboHiMan/ATOM-Bench/
@@ -255,7 +255,7 @@ it does not refute the published 250M result. Details: reports/peg_retry.md.
   0 contradictions; the single unique certification (PushT absolute) is documentation-correct;
   23 abstentions consistent with under-determination. Bonus real-world evidence: the
   LeRobot/OXE ecosystems actively disagree on gripper conventions (git history: docs/weakness_sota_recon.md §2)
-  — the problem the pair addresses exists in the wild. ../actionabi/reports/documentation_agreement.md.
+  — the problem the pair addresses exists in the wild. actionabi/reports/documentation_agreement.md.
 
 ## Round 10 (2026-07-21): external anchors
 

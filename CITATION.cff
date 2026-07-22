@@ -14,8 +14,11 @@ keywords:
   - action-interface
   - domain-adaptation
   - benchmark
+  - reinforcement-learning
+  - maniskill
   - system-identification
-repository-code: "https://github.com/Archerkattri/brain/tree/main/code/actionshift"
+  - belief-adaptation
+repository-code: "https://github.com/Archerkattri/actionshift"
 abstract: >-
   A benchmark and experimental DualABI controller for task-regret-aware adaptation to hidden
   compositional robot action-interface contracts (permutation, sign, scale, target, frame, lag,

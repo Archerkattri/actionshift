@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -16,6 +17,9 @@ def validate_split_config(config_path: Path, *, write_manifest: bool = False) ->
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     if not isinstance(config, dict):
         raise ValueError("split config must contain a mapping")
+    for required_key in ("split_rule", "seed", "manifest"):
+        if required_key not in config:
+            raise ValueError(f"split config must contain '{required_key}'")
     rule = str(config["split_rule"])
     seed = int(config["seed"])
     manifest = generate_split(rule, seed=seed)
@@ -43,9 +47,13 @@ def main() -> int:
     split.add_argument("config", type=Path)
     split.add_argument("--write-manifest", action="store_true")
     arguments = parser.parse_args()
-    validation = validate_split_config(
-        arguments.config, write_manifest=bool(arguments.write_manifest)
-    )
+    try:
+        validation = validate_split_config(
+            arguments.config, write_manifest=bool(arguments.write_manifest)
+        )
+    except (KeyError, TypeError, ValueError, OSError, yaml.YAMLError) as error:
+        print(f"validation error: {error}", file=sys.stderr)
+        return 2
     print(json.dumps(validation, indent=2, sort_keys=True))
     required = (
         validation["overlap_count"] == 0

@@ -25,7 +25,7 @@ state is a `(6 semantic × 6 raw × 2 signs × 7 scales)` evidence tensor — **
 trivially vectorized on GPU. This is the same decode-predict-compare as `hypotheses.py`, but computed
 per channel over the whole grammar instead of over nine enumerated contracts. ActionABI's bridge run
 already showed per-channel factorization recovers permutation/sign on this exact data
-(`../actionabi/reports/labeled_sim_traces.md`); this closes the loop by turning it into a *control*
+(`actionabi/reports/labeled_sim_traces.md`); this closes the loop by turning it into a *control*
 method and measuring end-to-end task success.
 
 ### Grammar-coverage check (stated, test-enforced)

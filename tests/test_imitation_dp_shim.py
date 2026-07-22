@@ -55,6 +55,67 @@ def test_replans_every_act_horizon_steps() -> None:
     assert plans == [0, 1, 2]  # steps 0-3, 4-7, 8 -> three plans
 
 
+class _StepReturn:
+    def __init__(self, prev_sample: torch.Tensor) -> None:
+        self.prev_sample = prev_sample
+
+
+class _RecordingScheduler:
+    """Fake DDPM scheduler: identity step that records the generator it was handed."""
+
+    def __init__(self) -> None:
+        self.timesteps = [2, 1, 0]
+        self.generators: list[object] = []
+
+    def step(
+        self,
+        *,
+        model_output: torch.Tensor,
+        timestep: int,
+        sample: torch.Tensor,
+        generator: object,
+    ) -> _StepReturn:
+        self.generators.append(generator)
+        return _StepReturn(sample)
+
+
+def _plan_only_shim(seed: int | None) -> DiffusionPolicyShim:
+    shim = object.__new__(DiffusionPolicyShim)
+    shim.config = DiffusionPolicyConfig(
+        observation_dim=4,
+        action_dim=3,
+        obs_horizon=2,
+        act_horizon=4,
+        pred_horizon=5,
+    )
+    shim.device = torch.device("cpu")
+    shim._generator = (
+        None if seed is None else torch.Generator(device="cpu").manual_seed(seed)
+    )
+    shim.scheduler = _RecordingScheduler()  # type: ignore[assignment]
+    shim.net = lambda *, sample, timestep, global_cond: torch.zeros_like(sample)  # type: ignore[assignment]
+    return shim
+
+
+def test_plan_threads_seeded_generator_into_every_scheduler_step() -> None:
+    shim = _plan_only_shim(seed=0)
+    shim._plan(torch.zeros(2, 2, 4))
+    scheduler = shim.scheduler
+    assert isinstance(scheduler, _RecordingScheduler)
+    # The seeded generator is passed to every reverse-diffusion step, not just the
+    # initial noise draw — otherwise sampling stays non-reproducible.
+    assert len(scheduler.generators) == len(scheduler.timesteps)
+    assert all(generator is shim._generator for generator in scheduler.generators)
+
+
+def test_plan_is_reproducible_across_shims_with_the_same_seed() -> None:
+    first = _plan_only_shim(seed=7)._plan(torch.zeros(2, 2, 4))
+    same = _plan_only_shim(seed=7)._plan(torch.zeros(2, 2, 4))
+    other = _plan_only_shim(seed=8)._plan(torch.zeros(2, 2, 4))
+    assert torch.equal(first, same)
+    assert not torch.equal(first, other)
+
+
 def test_reset_mask_forces_replan_and_refills_frames() -> None:
     shim, plans = _stub_shim(obs_dim=4, act_dim=3, obs_horizon=2, act_horizon=4)
     shim.act(torch.zeros(2, 4))  # step 0 -> plan 0

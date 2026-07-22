@@ -8,11 +8,11 @@ load-bearing inside the adaptation loop -- it computes the per-transition,
 per-hypothesis-cell residual scores that drive the MAP contract decision.
 
 Artifacts:
-- Binding: `../actionabi/bindings/{cell_score.hpp,module.cpp,cell_score_cuda.cu}`,
+- Binding: `actionabi/bindings/{cell_score.hpp,module.cpp,cell_score_cuda.cu}`,
   CMake target `actionabi_cells` (option `ACTIONABI_BUILD_PYBIND`).
 - Integration: `src/actionshift/adaptation/cpp_backend.py` + a `cell_scorer`
   injection seam on `FactorizedGrammarDriver` (`adaptation/factorized_grammar.py`).
-- Parity tests: `tests/test_cpp_fusion.py` (Python), `../actionabi/tests/test_cell_score.cpp`
+- Parity tests: `tests/test_cpp_fusion.py` (Python), `actionabi/tests/test_cell_score.cpp`
   (ctest `cell_score`).
 - Benchmark: `experiments/bench_cpp_fusion.py`; results
   `artifacts/cpp_fusion/bench_{cpu,gpu}.json`.
@@ -52,7 +52,7 @@ CPU/CUDA trajectory scorers use after the fix).
 ### The binding (pybind11)
 
 `actionabi_cells` is a pybind11 extension built by a dedicated CMake target under
-`../actionabi/bindings/`. pybind11 is discovered via its installed CMake config
+`actionabi/bindings/`. pybind11 is discovered via its installed CMake config
 (`pybind11.get_cmake_dir()`) with a FetchContent fallback. It exposes:
 
 - `score_cells_f32 / score_cells_f64` -- the fused per-cell kernel above, computed
@@ -87,7 +87,7 @@ as a driver-level swap because the pool `ExactBeliefDriver` was since extended w
 separate gripper-channel evidence term, so a faithful full swap would need that term
 too. The required, load-bearing integration is the factorized-grammar backend.
 
-Build recipe (CMake 4.4 via `uvx`, Release; see the Reproducing section of ../../actionabi/README.md):
+Build recipe (CMake 4.4 via `uvx`, Release; see the Reproducing section of the ActionABI repo's `README.md`):
 
 ```bash
 cd code/actionabi
@@ -180,7 +180,7 @@ Factorized grammar:
   256 envs up, torch-cuda's parallelism wins. The **transfer-inclusive C++ CUDA
   path loses to torch-cuda at every size** -- the per-call H2D/D2H dominates a kernel
   this small -- exactly reproducing ActionABI's own preregistered transfer-inclusive
-  negative (`../actionabi/reports/benchmark_sprint.md`). Kernel-only C++ CUDA would
+  negative (`actionabi/reports/benchmark_sprint.md`). Kernel-only C++ CUDA would
   be faster but is not a real end-to-end number, so it is not claimed.
 
 **The defensible claim is the CPU scaling regime.** For future multi-env,

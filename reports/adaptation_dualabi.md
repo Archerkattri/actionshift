@@ -28,7 +28,7 @@ steps; DualABI stops as soon as acting on its current MAP contract is task-safe.
 
 | Task / split | metric | **dualabi** | entropy_probes | fixed_probes | exact_belief* |
 |---|---|---:|---:|---:|---:|
-| Pick / seen | success | 0.983 | 0.987 | 0.928 | 0.928 |
+| Pick / seen | success | 0.983 | 0.987 | 0.928 | 0.929 |
 | | probe steps | **2.78** | 6.00 | 6.00 | 0.00 |
 | | displacement | **0.0117** | 0.0229 | 0.0656 | 0.0000 |
 | Pick / unseen comp. | success | 0.983 | 0.975 | 0.970 | 0.958 |

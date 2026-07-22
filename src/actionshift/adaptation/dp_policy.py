@@ -95,11 +95,15 @@ class DiffusionPolicyShim:
         *,
         device: torch.device | str = "cuda",
         weights: str = "ema_agent",
+        seed: int | None = None,
     ) -> None:
         from diffusers.schedulers.scheduling_ddpm import DDPMScheduler
 
         self.config = config
         self.device = torch.device(device)
+        self._generator = (
+            None if seed is None else torch.Generator(device=self.device).manual_seed(seed)
+        )
         unet_cls = _import_unet()
         self.net = unet_cls(
             input_dim=config.action_dim,
@@ -144,11 +148,15 @@ class DiffusionPolicyShim:
         noisy = torch.randn(
             (batch, self.config.pred_horizon, self.config.action_dim),
             device=self.device,
+            generator=self._generator,
         )
         for step in self.scheduler.timesteps:
             noise_pred = self.net(sample=noisy, timestep=step, global_cond=obs_cond)
             noisy = self.scheduler.step(
-                model_output=noise_pred, timestep=step, sample=noisy
+                model_output=noise_pred,
+                timestep=step,
+                sample=noisy,
+                generator=self._generator,
             ).prev_sample
         start = self.config.obs_horizon - 1
         end = start + self.config.act_horizon

@@ -169,7 +169,7 @@ class SprintScheduler:
                         0,
                         elapsed,
                         None,
-                        f"GPU query failed: {error}",
+                        f"GPU query failed ({type(error).__name__}): {error}",
                     )
                 )
             if len(snapshots) != 1:

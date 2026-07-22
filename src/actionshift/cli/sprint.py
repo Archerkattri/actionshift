@@ -222,7 +222,7 @@ def main() -> None:
     arguments = build_parser().parse_args()
     try:
         raise SystemExit(arguments.handler(arguments))
-    except (KeyError, TypeError, ValueError) as error:
+    except (KeyError, TypeError, ValueError, OSError, yaml.YAMLError) as error:
         print(f"configuration error: {error}", file=sys.stderr)
         raise SystemExit(2) from error
 
