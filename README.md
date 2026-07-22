@@ -1,5 +1,11 @@
 # ActionShift
+[![CI](https://github.com/Archerkattri/actionshift/actions/workflows/ci.yml/badge.svg)](https://github.com/Archerkattri/actionshift/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/Archerkattri/actionshift?color=1f6feb)](https://github.com/Archerkattri/actionshift/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21500713.svg)](https://doi.org/10.5281/zenodo.21500713)
+[![License: MIT](https://img.shields.io/badge/license-MIT-0d9488.svg)](LICENSE)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776ab.svg)](pyproject.toml)
+[![ManiSkill 3](https://img.shields.io/badge/sim-ManiSkill%203-d97706.svg)](https://github.com/haosulab/ManiSkill)
+[![Tests](https://img.shields.io/badge/tests-300%20passing-16a34a.svg)](tests/)
 
 > **What happens to a trained robot policy when the meaning of its action numbers silently changes —
 > and can it recover on its own, without ever being told?**
