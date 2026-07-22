@@ -23,3 +23,7 @@ abstract: >-
   A benchmark and experimental DualABI controller for task-regret-aware adaptation to hidden
   compositional robot action-interface contracts (permutation, sign, scale, target, frame, lag,
   and gripper semantics), with a matched-privilege method ladder over real ManiSkill tasks.
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21500713
+    description: "Zenodo software archive"

@@ -1,4 +1,5 @@
 # ActionShift
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21500713.svg)](https://doi.org/10.5281/zenodo.21500713)
 
 > **What happens to a trained robot policy when the meaning of its action numbers silently changes —
 > and can it recover on its own, without ever being told?**
