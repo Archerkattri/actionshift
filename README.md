@@ -1,5 +1,4 @@
 # ActionShift
-[![CI](https://github.com/Archerkattri/actionshift/actions/workflows/ci.yml/badge.svg)](https://github.com/Archerkattri/actionshift/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/Archerkattri/actionshift?color=1f6feb)](https://github.com/Archerkattri/actionshift/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21500713.svg)](https://doi.org/10.5281/zenodo.21500713)
 [![License: MIT](https://img.shields.io/badge/license-MIT-0d9488.svg)](LICENSE)
