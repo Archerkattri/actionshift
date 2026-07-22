@@ -1,0 +1,10 @@
+schema_version: "1.0"
+name: unseen_composition
+seed: 20260718
+generator_version: "split-v1"
+split_rule: unseen_composition
+manifest: manifests/unseen_composition.json
+training: individual_field_changes_and_identity
+test: held_out_pair_and_triple_compositions
+require_disjoint_contracts: true
+require_disjoint_composition_signatures: true

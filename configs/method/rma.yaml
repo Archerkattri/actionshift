@@ -1,0 +1,6 @@
+name: rma
+stages: [privileged_teacher, supervised_adaptation, optional_joint_finetune]
+privileged_contract_context: teacher_only
+history_length: 8
+latent_dim: 32
+actor_hidden_dim: 256

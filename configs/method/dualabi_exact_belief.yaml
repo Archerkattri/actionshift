@@ -1,0 +1,10 @@
+name: dualabi_exact_belief
+belief: exact_enumerated
+information_mode: task_regret
+candidate_count: 13
+candidate_radius: 0.1
+safety_weight: 4.0
+information_weight: 0.8
+terminal_weight: 1.0
+dynamics_ensemble_size: 5
+hard_safety_mask: true

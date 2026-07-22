@@ -1,0 +1,94 @@
+{
+  "contract": {
+    "frame": "base",
+    "gripper_inverted": true,
+    "lag": 0,
+    "permutation": [
+      1,
+      0,
+      2,
+      4,
+      3,
+      5
+    ],
+    "scale": [
+      0.5,
+      1.5,
+      1.0,
+      1.0,
+      0.75,
+      1.25
+    ],
+    "sign": [
+      -1,
+      1,
+      1,
+      -1,
+      1,
+      1
+    ],
+    "target": "delta"
+  },
+  "kind": "maniskill_oracle_encoding_smoke",
+  "limitations": [
+    "This verifies real simulator integration and oracle encoding, not learned-policy success.",
+    "The short trajectory is not a performance comparison between adaptation methods."
+  ],
+  "passed": true,
+  "schema_version": "1.0",
+  "sim_backend": "cpu",
+  "steps_per_task": 3,
+  "tasks": {
+    "peg_insertion_side": {
+      "action_shape": [
+        1,
+        7
+      ],
+      "elapsed_seconds": 0.12012344700633548,
+      "environment_id": "PegInsertionSide-v1",
+      "finite_observations": true,
+      "maximum_decode_error": 4.656612873077393e-10,
+      "observation_shape": [
+        1,
+        43
+      ],
+      "oracle_records": 3,
+      "steps": 3,
+      "success_seen": false
+    },
+    "pick_cube": {
+      "action_shape": [
+        1,
+        7
+      ],
+      "elapsed_seconds": 0.010886017989832908,
+      "environment_id": "PickCube-v1",
+      "finite_observations": true,
+      "maximum_decode_error": 4.656612873077393e-10,
+      "observation_shape": [
+        1,
+        42
+      ],
+      "oracle_records": 3,
+      "steps": 3,
+      "success_seen": false
+    },
+    "push_cube": {
+      "action_shape": [
+        1,
+        7
+      ],
+      "elapsed_seconds": 0.007893062982475385,
+      "environment_id": "PushCube-v1",
+      "finite_observations": true,
+      "maximum_decode_error": 4.656612873077393e-10,
+      "observation_shape": [
+        1,
+        35
+      ],
+      "oracle_records": 3,
+      "steps": 3,
+      "success_seen": false
+    }
+  }
+}

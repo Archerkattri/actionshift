@@ -1,0 +1,9 @@
+schema_version: "1.0"
+name: long_lag
+seed: 20260718
+generator_version: "split-v1"
+split_rule: long_lag
+manifest: manifests/long_lag.json
+train_lags: [0, 1]
+test_lags: [2, 4]
+require_disjoint_contracts: true

@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use ActionShift, cite this software and ManiSkill separately."
+title: "ActionShift: Hidden compositional action-interface adaptation benchmark"
+type: software
+authors:
+  - given-names: "Krishi"
+    family-names: "Attri"
+    email: "krishiattriwork@gmail.com"
+version: 1.0.0
+date-released: 2026-07-22
+license: MIT
+keywords:
+  - robot-manipulation
+  - action-interface
+  - domain-adaptation
+  - benchmark
+  - system-identification
+repository-code: "https://github.com/Archerkattri/brain/tree/main/code/actionshift"
+abstract: >-
+  A benchmark and experimental DualABI controller for task-regret-aware adaptation to hidden
+  compositional robot action-interface contracts (permutation, sign, scale, target, frame, lag,
+  and gripper semantics), with a matched-privilege method ladder over real ManiSkill tasks.

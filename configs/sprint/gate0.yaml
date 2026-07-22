@@ -1,0 +1,31 @@
+schema_version: "1.0"
+gate: gate0
+seed: 20260718
+controller: pd_ee_delta_pose
+observation: state
+evaluation_episodes: 100
+conditions: [unwrapped, identity, oracle_nonidentity]
+deadline_minutes: 60
+tasks:
+  pick_cube:
+    competence_floor: 0.50
+    budgets: {ppo: 10000000, sac: 250000, tdmpc2: 50000}
+  push_cube:
+    competence_floor: 0.50
+    budgets: {ppo: 2000000, sac: 250000, tdmpc2: 50000}
+  peg_insertion_side:
+    competence_floor: 0.20
+    budgets: {ppo: 10000000, sac: 250000, tdmpc2: 50000}
+methods:
+  - ppo
+  - sac
+  - tdmpc2
+  - fasttd3
+parity:
+  maximum_absolute_success_difference: 0.02
+  allow_overlapping_wilson_intervals: true
+source_deviation:
+  label: official_code_common_controller_short_budget
+  description: >-
+    Official implementations are used, but budgets and controller are frozen to the shared
+    ActionShift protocol instead of claiming exact reproduction of each tuned published config.

@@ -1,0 +1,14 @@
+schema_version: "1.0"
+generator_version: "core-v1"
+seed: 20260718
+dimension: 2
+product:
+  permutation: [[0, 1], [1, 0]]
+  sign: [[-1, -1], [-1, 1], [1, -1], [1, 1]]
+  scale: [[1.0, 1.0], [1.5, 1.5]]
+  lag: [0, 2]
+fixed:
+  target: delta
+  frame: base
+  gripper_inverted: false
+contract_count: 32

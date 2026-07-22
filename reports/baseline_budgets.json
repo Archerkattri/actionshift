@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "declared_input": {
+    "observation_dim": 42,
+    "action_dim": 7
+  },
+  "parameter_counts": {
+    "feedforward_actor_critic": 78863,
+    "recurrent_actor_critic": 78208
+  },
+  "recurrent_relative_difference": 0.008305035314402443,
+  "within_ten_percent": true,
+  "note": "OSI/RMA adaptation modules add separately reported inference parameters and are not hidden inside the actor budget."
+}

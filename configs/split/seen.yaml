@@ -1,0 +1,7 @@
+schema_version: "1.0"
+name: seen
+seed: 20260718
+generator_version: "split-v1"
+split_rule: seen
+manifest: manifests/seen.json
+require_disjoint_contracts: true

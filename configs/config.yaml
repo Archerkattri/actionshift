@@ -1,0 +1,6 @@
+seed: 20260718
+device: cuda
+max_gpus: 2
+deterministic: true
+contract_split: unseen_composition
+observation_mode: state

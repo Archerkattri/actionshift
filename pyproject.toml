@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "actionshift"
+version = "1.0.0"
+description = "Benchmark and research harness for manipulation policies adapting to hidden compositional action-interface contracts, with the DualABI controller."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Krishi Attri", email = "krishiattriwork@gmail.com" }]
+keywords = [
+  "robot-manipulation",
+  "action-interface",
+  "domain-adaptation",
+  "benchmark",
+  "reinforcement-learning",
+  "maniskill",
+  "system-identification",
+  "belief-adaptation",
+]
+dependencies = [
+    "gymnasium>=1.0",
+    "numpy>=1.26",
+    "PyYAML>=6",
+    "scipy>=1.11",
+    "torch>=2.4",
+]
+
+[project.scripts]
+actionshift-validate = "actionshift.cli.validate:main"
+actionshift-evaluate = "actionshift.cli.evaluate:main"
+actionshift-smoke = "actionshift.evaluation.maniskill_smoke:main"
+actionshift-sprint = "actionshift.cli.sprint:main"
+actionshift-selftest = "actionshift.selftest.cli:main"
+
+[project.optional-dependencies]
+dev = ["mypy>=1.10", "pytest>=8", "ruff>=0.5", "types-PyYAML>=6"]
+maniskill = ["gymnasium>=1.0", "mani-skill>=3", "numpy>=1.26"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers --strict-config --import-mode=importlib"
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["actionshift"]
+mypy_path = "src"
+
+[[tool.mypy.overrides]]
+module = ["mani_skill.*", "diffusers.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "actionshift.benchmarking.ppo_parity",
+    "actionshift.envs.tasks",
+    "actionshift.adaptation.dp_policy",
+]
+disable_error_code = ["unused-ignore"]

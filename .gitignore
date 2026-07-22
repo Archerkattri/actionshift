@@ -1,0 +1,13 @@
+/.mypy_cache/
+/.pytest_cache/
+/.ruff_cache/
+/.venv/
+/dist/
+/build/
+*.egg-info/
+__pycache__/
+*.py[cod]
+/third_party/
+/artifacts/
+/.venv-delayext/
+/.venv-rlrd/

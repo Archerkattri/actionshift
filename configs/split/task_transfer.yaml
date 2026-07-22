@@ -1,0 +1,9 @@
+schema_version: "1.0"
+name: task_transfer
+seed: 20260718
+generator_version: "split-v1"
+split_rule: task_transfer
+manifest: manifests/task_transfer.json
+train_tasks: [PickCube-v1, PushCube-v1]
+test_tasks: [PegInsertionSide-v1]
+require_disjoint_contracts: true

@@ -1,0 +1,10 @@
+schema_version: "1.0"
+name: unseen_value
+seed: 20260718
+generator_version: "split-v1"
+split_rule: unseen_value
+manifest: manifests/unseen_value.json
+held_out_values:
+  scale: 0.5
+  lag: 4
+require_disjoint_contracts: true

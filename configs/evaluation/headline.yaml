@@ -1,0 +1,19 @@
+schema_version: "1.0"
+backend: maniskill
+seeds: [20260718, 20260719, 20260720, 20260721, 20260722]
+tasks: [pick_cube, push_cube, peg_insertion_side]
+splits: [seen, unseen_value, unseen_composition, long_lag, task_transfer]
+methods:
+  - oracle
+  - no_adapt
+  - domain_randomized
+  - recurrent
+  - osi
+  - rma
+  - random_probes
+  - fixed_probes
+  - dualabi
+  - dualabi_entropy
+episodes_per_job: 100
+primary_metric: success_rate
+confidence: 0.95

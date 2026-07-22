@@ -1,0 +1,73 @@
+{
+  "compute": {
+    "cuda_available": true,
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "gpu_count_used": 1
+  },
+  "contract_count": 32,
+  "decision": "continue",
+  "environment": "controlled_pickcube_linear_proxy",
+  "episodes_per_seed": 32,
+  "gate": {
+    "exact_belief_converged": true,
+    "exact_better_than_no_adaptation": true,
+    "oracle_invariant": true,
+    "tradeoff_nontrivial": true
+  },
+  "limitations": [
+    "This fast gate tests adaptation mechanics, not learned ManiSkill task competence.",
+    "A separate GPU ManiSkill smoke is required before any simulator-level claim."
+  ],
+  "methods": {
+    "exact_regret_aware": {
+      "final_distance": 0.11201171075132359,
+      "posterior_true": 0.9968169334881676,
+      "success": 0.51875,
+      "unintended_displacement": 0.5157304680645628,
+      "violations": 0.0
+    },
+    "fixed_pulses": {
+      "final_distance": 0.08214253529333468,
+      "posterior_true": 0.9999995082670139,
+      "success": 0.66875,
+      "unintended_displacement": 0.42861139531764436,
+      "violations": 0.0
+    },
+    "no_adaptation": {
+      "final_distance": 3.432353199825203,
+      "posterior_true": 0.8994028716799939,
+      "success": 0.08125,
+      "unintended_displacement": 3.1282362415347817,
+      "violations": 15.20625
+    },
+    "oracle": {
+      "final_distance": 9.367506770274759e-18,
+      "posterior_true": 0.953268905413075,
+      "success": 1.0,
+      "unintended_displacement": 3.4694469519536144e-19,
+      "violations": 0.0
+    },
+    "random_probes": {
+      "final_distance": 0.10614726427857232,
+      "posterior_true": 0.9998239746860673,
+      "success": 0.53125,
+      "unintended_displacement": 0.4878011795815584,
+      "violations": 0.0
+    },
+    "recurrent_domain_randomization": {
+      "final_distance": 2.680678178888438,
+      "posterior_true": 0.903722039229042,
+      "success": 0.0625,
+      "unintended_displacement": 2.286930485416561,
+      "violations": 12.95
+    }
+  },
+  "schema_version": "1.0",
+  "seeds": [
+    20260718,
+    20260719,
+    20260720,
+    20260721,
+    20260722
+  ]
+}

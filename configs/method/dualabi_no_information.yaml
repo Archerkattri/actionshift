@@ -1,0 +1,10 @@
+name: dualabi_no_information
+belief: learned_factorized
+information_mode: none
+candidate_count: 13
+candidate_radius: 0.1
+safety_weight: 4.0
+information_weight: 0.0
+terminal_weight: 1.0
+dynamics_ensemble_size: 5
+hard_safety_mask: true

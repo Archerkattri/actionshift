@@ -1,0 +1,16 @@
+schema_version: "1.0"
+gate: gate0
+seed: 20260718
+condition: unwrapped_eval100
+controller: pd_ee_delta_pose
+observation: state
+evaluation_steps: 100
+failure_superseded:
+  job_id: 6a4cb76dae4f9664
+  reason: Initial adapter evaluated only 50 steps for a 100-step task horizon.
+tasks:
+  peg_insertion_side:
+    gpu: 3
+    competence_floor: 0.20
+    budgets: {sac: 250000}
+methods: [sac]

@@ -1,0 +1,818 @@
+{
+  "generator_version": "split-v1",
+  "manifest_sha256": "ef3cc403c8fd0c4810395cddcdd410fe36962806942a5083222e473a4bf8e4cc",
+  "rule": "unseen_composition",
+  "schema_version": "1.0",
+  "seed": 20260718,
+  "test": [
+    {
+      "composition": [
+        "permutation",
+        "sign",
+        "scale",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          -1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "0c0dcad2461c439cc46ac04199d293a950cf7c2cf95c598c9fddd3acd4a64195"
+    },
+    {
+      "composition": [
+        "sign",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          -1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "0d511a4b7308d5a789ebe04d12fa0af1c637fad2bb73d8f4ca2f6e4267628d37"
+    },
+    {
+      "composition": [
+        "permutation",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "13af4683e6f7e974ed5b669e1db119ee1dc3c6af389203984c1a47eb57dcfea0"
+    },
+    {
+      "composition": [
+        "permutation",
+        "sign",
+        "scale"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          -1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "1d7963aa6c45c862bc86e65f09c07c53921b16765174c578ed4eb258b0c174c3"
+    },
+    {
+      "composition": [
+        "permutation",
+        "sign",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          -1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "336d97cd7a5f1a69fe0aafd99f1f245a50179f0b42345fdfeb675f3ef1c24a3e"
+    },
+    {
+      "composition": [
+        "permutation",
+        "sign",
+        "scale"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          -1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "348d5cfebcb44c9d1b7fc4dc2cdfc944d048f825ba8756080d8eb2b5207f5740"
+    },
+    {
+      "composition": [
+        "sign",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "40b037f306a2b1f87088c64a88bd0aba4a006443e2d91da416aa6850a364495f"
+    },
+    {
+      "composition": [
+        "sign",
+        "scale"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "4180a842aa1a3184e3d99806bd84053b959cc71f74b091299757380bca0621e6"
+    },
+    {
+      "composition": [
+        "permutation",
+        "sign",
+        "scale"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "4b7ea314b1b76b5e4d6dda15e9d50cfea2e5743fea6d2ad0c07eaa0a9a5c3de5"
+    },
+    {
+      "composition": [
+        "permutation",
+        "sign",
+        "scale",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          -1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "5aca25609ba13267fb461a2d19ab528b1b284470137118f6709d11d3f83c690e"
+    },
+    {
+      "composition": [
+        "sign",
+        "scale",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          -1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "66ccb70d0fabc182ab86bf017e548983e541aaa0f6357e10fd2ead7ab9c2af86"
+    },
+    {
+      "composition": [
+        "sign",
+        "scale",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "6a5d6b297c606ca1a910e33a69ad06afed383d1cdcdae843cc9b3794833f582d"
+    },
+    {
+      "composition": [
+        "sign",
+        "scale"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          -1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "6aff8b8d82c332dd4645445a731669cd9ae6868458e250c9a4eb6994c50eb112"
+    },
+    {
+      "composition": [
+        "permutation",
+        "sign",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "7ed4b506248994f06b2c00e2a2685468fc80bd720668ee7dcc0ab3c8e93b9cb4"
+    },
+    {
+      "composition": [
+        "permutation",
+        "sign"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          -1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "8b00938660cc9ed78148522f75cee209047662785809a179fbde085b67b07f54"
+    },
+    {
+      "composition": [
+        "permutation",
+        "scale"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "9017505c14105b3af896be3cf8b9aec686dc432b0033035805923dfbff72eccb"
+    },
+    {
+      "composition": [
+        "permutation",
+        "sign"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          -1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "9201b3d3b253953aa23a808208118cdfdb00a6ab1965faad4085fdbc4fab1d4a"
+    },
+    {
+      "composition": [
+        "sign",
+        "scale"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          -1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "a480c2dba5176e47ea0e578c28460a6da125f032b15181975fa746c3bb50c095"
+    },
+    {
+      "composition": [
+        "scale",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "ac56e1640f7fff2145817d3b472ca703e5c199343d445cb89f76f54bfb7e4b16"
+    },
+    {
+      "composition": [
+        "permutation",
+        "sign",
+        "scale",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "c4aeb2358fe3ae7e59a346cf7a4655f2d536284d7abefcaf725b14497361a6be"
+    },
+    {
+      "composition": [
+        "permutation",
+        "sign"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "c640175fb02db89b04343707e25a88f2a2c3fa5ccc5b5d9957046caee91f46e0"
+    },
+    {
+      "composition": [
+        "permutation",
+        "scale",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "d2d1b2ae5abb721bd9495ac8e5a1e5d667fb68b4f2083fa39c5c705bff32086e"
+    },
+    {
+      "composition": [
+        "permutation",
+        "sign",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          -1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "e84e81f1227ed2ff2a7a9e259ca3a583fad7ab4f54813b538e6bea6a51489c72"
+    },
+    {
+      "composition": [
+        "sign",
+        "scale",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          -1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "ed28ce1efb765602e057ea646c5555cef5674767fed1d782946ce0b3c9f4c50b"
+    },
+    {
+      "composition": [
+        "sign",
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          -1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "f11afff4bc4b7f0a50bcbb4ede96dc61514852935292952582ad1d9b9a74d3e2"
+    }
+  ],
+  "train": [
+    {
+      "composition": [
+        "sign"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          -1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "2c5f192f8d53b18acc41eab843fc122259e25c8f2b65f6a60078b7fed12610bc"
+    },
+    {
+      "composition": [
+        "permutation"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          1,
+          0
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "4cb3a155e7ff7f6457a29411b156b1bd9300c62db17d8e7bf97f52d79a985002"
+    },
+    {
+      "composition": [
+        "sign"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          -1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "53ea76e944e3707503a02d877f077bd51b1677016ebb2cbb949a463ba163e8e6"
+    },
+    {
+      "composition": [
+        "sign"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          1,
+          -1
+        ],
+        "target": "delta"
+      },
+      "sha256": "7a94d2ee9fc5ec3e4ed91cf1f810c4753cd60e3b92eba567f49fa45c2fdd323a"
+    },
+    {
+      "composition": [
+        "scale"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.5,
+          1.5
+        ],
+        "sign": [
+          1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "9b67e830847cc5a4796bf6eb2d5bd8c241748b89cf17590ed6de6fdb4ae6118d"
+    },
+    {
+      "composition": [
+        "lag"
+      ],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 2,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "eab0abae3cb286189784aa00f55ccbd971d5fa57304dcd4c4b4b22c20a0fcd42"
+    },
+    {
+      "composition": [],
+      "contract": {
+        "frame": "base",
+        "gripper_inverted": false,
+        "lag": 0,
+        "permutation": [
+          0,
+          1
+        ],
+        "scale": [
+          1.0,
+          1.0
+        ],
+        "sign": [
+          1,
+          1
+        ],
+        "target": "delta"
+      },
+      "sha256": "f8e0614f8bdebd69b5e6ffc21c14d40bbe3eb91ef070daaa54a847422241a523"
+    }
+  ]
+}

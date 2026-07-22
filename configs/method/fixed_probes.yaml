@@ -1,0 +1,5 @@
+name: fixed_probes
+probe_steps: 3
+probe_radius: 0.1
+sequence: positive_basis
+then: learned_factorized

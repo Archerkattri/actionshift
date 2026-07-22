@@ -1,0 +1,22 @@
+diff --git a/examples/baselines/tdmpc2/envs/maniskill.py b/examples/baselines/tdmpc2/envs/maniskill.py
+index 15e51bd..3ea3ef5 100644
+--- a/examples/baselines/tdmpc2/envs/maniskill.py
++++ b/examples/baselines/tdmpc2/envs/maniskill.py
+@@ -56,7 +56,7 @@ def make_envs(cfg, num_envs, record_video_path, is_eval, logger):
+ 	if cfg.env_type == 'cpu':
+ 		# Get default control_mode and max_episode_steps values
+ 		dummy_env = env_make_fn()
+-		control_mode = dummy_env.control_mode
++		control_mode = dummy_env.unwrapped.control_mode
+ 		max_episode_steps = gym_utils.find_max_episode_steps_value(dummy_env)
+ 		dummy_env.close()
+ 		del dummy_env
+@@ -76,7 +76,7 @@ def make_envs(cfg, num_envs, record_video_path, is_eval, logger):
+ 		env = TensorWrapper(env)
+ 	elif cfg.env_type == 'gpu':
+ 		env = env_make_fn(num_envs=num_envs)
+-		control_mode = env.control_mode
++		control_mode = env.unwrapped.control_mode
+ 		max_episode_steps = gym_utils.find_max_episode_steps_value(env)
+ 		if cfg['obs'] == 'rgb':
+ 			env = FlattenRGBDObservationWrapper(env, rgb=True, depth=False, state=cfg.include_state)

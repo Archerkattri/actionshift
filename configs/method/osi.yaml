@@ -1,0 +1,6 @@
+name: osi
+privileged_contract_context: training_labels_only
+history_length: 8
+history_inputs: [observation, raw_action, next_observation, reward, done]
+latent_dim: 32
+actor_hidden_dim: 256

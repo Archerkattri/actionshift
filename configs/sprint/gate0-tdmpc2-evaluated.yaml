@@ -1,0 +1,24 @@
+schema_version: "1.0"
+gate: gate0
+seed: 20260718
+condition: unwrapped_midrun_eval112
+controller: pd_ee_delta_pose
+observation: state
+evaluation_episodes: 112
+failure_superseded:
+  condition: unwrapped
+  reason: The original 50k run only evaluated the randomly initialized policy at step zero.
+tasks:
+  pick_cube:
+    gpu: 0
+    competence_floor: 0.50
+    budgets: {tdmpc2: 50000}
+  push_cube:
+    gpu: 1
+    competence_floor: 0.50
+    budgets: {tdmpc2: 50000}
+  peg_insertion_side:
+    gpu: 2
+    competence_floor: 0.20
+    budgets: {tdmpc2: 50000}
+methods: [tdmpc2]

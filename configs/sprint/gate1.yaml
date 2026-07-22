@@ -1,0 +1,34 @@
+schema_version: "1.0"
+gate: gate1
+pilot_seed: 20260718
+promotion_seeds: [20260719, 20260720]
+tasks:
+  pick_cube:
+    backbone: ppo
+    checkpoint_job: 8131f330bd69aa6b
+  push_cube:
+    backbone: ppo
+    checkpoint_job: a1df53155e11ee42
+excluded_tasks:
+  peg_insertion_side: no Gate 0 backbone met the 0.20 competence floor
+splits: [seen, unseen_composition, long_lag]
+methods:
+  - oracle
+  - no_adapt
+  - domain_randomized
+  - recurrent
+  - up_osi
+  - rma
+  - fixed_probes
+  - random_probes
+  - posterior_only
+  - entropy
+  - exact_belief
+  - dualabi
+matched_budget:
+  observation: state
+  history_steps: 16
+  environment_steps: 1000000
+  updates: 10000
+  probe_budget: 4
+claim_rule: one seed may prune; superiority requires three matched seeds

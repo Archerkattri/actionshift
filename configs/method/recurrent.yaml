@@ -1,0 +1,6 @@
+name: recurrent_domain_randomization
+privileged_contract_context: none
+history: gru
+history_inputs: [observation, previous_raw_action, reward, done]
+hidden_dim: 136
+parameter_budget_tolerance: 0.10

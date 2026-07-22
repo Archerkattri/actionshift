@@ -1,0 +1,11 @@
+name: no_adaptation
+privileged_contract_context: none
+history: none
+actor_hidden_dim: 256
+critic_hidden_dim: 256
+ppo:
+  learning_rate: 0.0003
+  rollout_steps: 32
+  epochs: 4
+  minibatch_size: 1024
+  clip_ratio: 0.2
