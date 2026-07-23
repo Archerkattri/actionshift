@@ -1,6 +1,8 @@
 # ActionShift
 [![Release](https://img.shields.io/github/v/release/Archerkattri/actionshift?color=1f6feb)](https://github.com/Archerkattri/actionshift/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21500713.svg)](https://doi.org/10.5281/zenodo.21500713)
+[![HF Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20dataset-kattri15%2Factionshift-ff9d00)](https://huggingface.co/datasets/kattri15/actionshift)
+[![HF Model](https://img.shields.io/badge/%F0%9F%A4%97%20checkpoints-actionshift--baselines-ff9d00)](https://huggingface.co/kattri15/actionshift-baselines)
 [![License: MIT](https://img.shields.io/badge/license-MIT-0d9488.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776ab.svg)](pyproject.toml)
 [![ManiSkill 3](https://img.shields.io/badge/sim-ManiSkill%203-d97706.svg)](https://github.com/haosulab/ManiSkill)
