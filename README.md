@@ -1,4 +1,6 @@
 # ActionShift
+[![PyPI](https://img.shields.io/pypi/v/actionshift?color=3775a9)](https://pypi.org/project/actionshift/)
+[![Downloads](https://static.pepy.tech/badge/actionshift)](https://pepy.tech/project/actionshift)
 [![Release](https://img.shields.io/github/v/release/Archerkattri/actionshift?color=1f6feb)](https://github.com/Archerkattri/actionshift/releases)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21500713.svg)](https://doi.org/10.5281/zenodo.21500713)
 [![HF Dataset](https://img.shields.io/badge/%F0%9F%A4%97%20dataset-kattri15%2Factionshift-ff9d00)](https://huggingface.co/datasets/kattri15/actionshift)
