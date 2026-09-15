@@ -314,6 +314,9 @@ section) and the tool is built to **abstain, never bluff**, on them:
   delay-aware backbone (`reports/adaptation_delay_aware.md`), not a probe.
 - **Tool frame under identity rotation.** With an identity end-effector rotation (the default), base
   and tool frames are indistinguishable; the default pool is therefore base-frame only.
+  The self-test explicitly returns **INCONCLUSIVE** for a tool-frame request unless a future
+  rotation-bearing probe capability is supplied; it never treats the factorized grammar's
+  `frame=base` fallback as tool-frame verification.
 - **Wirings outside the declared pool.** A wiring it never modeled triggers the misspecification guard
   (`INCONCLUSIVE`) — it is **not** silently mapped onto the nearest pool member as a false verdict.
 - **Real-robot short-window limit.** On the real sim, the weak controller response means a 6-step probe
@@ -915,3 +918,11 @@ method-superiority-over-SOTA claim is made. The graded, harshly-audited ledger i
 ActionShift code is MIT licensed (`LICENSE`). Cite via `CITATION.cff`. ManiSkill, SAPIEN, MuJoCo, robot
 assets, and task assets are separate works with their own licenses and attribution requirements; this
 repository does not redistribute them. Dataset and simulator assets retain their original licenses.
+
+## Current release status
+
+The current checkout has a real CPU ManiSkill/SAPIEN smoke covering
+PegInsertionSide, PickCube, PullCube, PushCube and StackCube, with 317 tests
+passing and 5 skips. Compound-shift contracts and provenance checks are
+closed. Learned-policy success, matched-budget controls, GPU runs and the final
+challenge matrix remain unmeasured.

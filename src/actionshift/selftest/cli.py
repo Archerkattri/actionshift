@@ -120,6 +120,7 @@ def _render_json(
         "unresolved_fields": list(verdict.unresolved),
         "field_diffs": verdict.diffs,
         "fit_ratio": result.fit_ratio,
+        "frame_capable": result.frame_capable,
         "probe_steps": result.probe_steps,
         "probe_displacement": result.probe_displacement,
         "map_posterior": result.map_posterior,

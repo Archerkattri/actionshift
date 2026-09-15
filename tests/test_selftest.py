@@ -107,6 +107,59 @@ class VerdictLogicTest(unittest.TestCase):
         self.assertEqual(verdict.status, "INCONCLUSIVE")
         self.assertIn("misspecification", verdict.reason)
 
+    def test_nonfinite_confidence_cannot_reach_pass(self) -> None:
+        verdict = decide_verdict(
+            _result(_identity(), confidence={field: float("nan") for field in POSE_FIELDS}),
+            _identity(),
+        )
+        self.assertEqual(verdict.status, "INCONCLUSIVE")
+        self.assertEqual(verdict.exit_code, 2)
+        self.assertEqual(set(verdict.unresolved), set(POSE_FIELDS))
+        self.assertIn("field_confidence['permutation']", verdict.reason)
+
+    def test_infinite_fit_ratio_cannot_reach_pass(self) -> None:
+        verdict = decide_verdict(_result(_identity(), fit_ratio=float("inf")), _identity())
+        self.assertEqual(verdict.status, "INCONCLUSIVE")
+        self.assertEqual(verdict.exit_code, 2)
+        self.assertIn("fit_ratio", verdict.reason)
+
+    def test_nonfinite_posterior_cannot_reach_pass(self) -> None:
+        result = _result(_identity())
+        result = IdentificationResult(
+            map_contract=result.map_contract,
+            pool_posterior=(float("nan"),),
+            field_confidence=result.field_confidence,
+            fit_ratio=result.fit_ratio,
+            probe_steps=result.probe_steps,
+            probe_displacement=result.probe_displacement,
+            strategy=result.strategy,
+        )
+        verdict = decide_verdict(result, _identity())
+        self.assertEqual(verdict.status, "INCONCLUSIVE")
+        self.assertIn("pool_posterior[0]", verdict.reason)
+
+    def test_confidence_outside_probability_range_is_inconclusive(self) -> None:
+        verdict = decide_verdict(
+            _result(_identity(), confidence={"lag": 1.1}), _identity()
+        )
+        self.assertEqual(verdict.status, "INCONCLUSIVE")
+        self.assertIn("field_confidence['lag']", verdict.reason)
+
+    def test_tool_frame_without_rotation_capability_is_unsupported(self) -> None:
+        tool = ActionContract(
+            permutation=(0, 1, 2, 3, 4, 5),
+            sign=(1,) * 6,
+            scale=(1.0,) * 6,
+            target="delta",
+            frame="tool",
+            lag=0,
+            gripper_inverted=False,
+        )
+        verdict = decide_verdict(_result(tool), tool)
+        self.assertEqual(verdict.status, "INCONCLUSIVE")
+        self.assertEqual(verdict.unresolved, ("frame",))
+        self.assertIn("unsupported frame verification", verdict.reason)
+
     def test_confident_mismatch_survives_an_unresolved_sibling_field(self) -> None:
         swapped = named_contract("swapped-axes")
         verdict = decide_verdict(

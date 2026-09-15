@@ -11,3 +11,4 @@ __pycache__/
 /artifacts/
 /.venv-delayext/
 /.venv-rlrd/
+/.venv-wsl-cpu/

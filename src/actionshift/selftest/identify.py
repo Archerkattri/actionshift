@@ -36,6 +36,9 @@ class ProbeEnvironment(Protocol):
 
     batch_size: int
     channels: int
+    # True only when observations carry the live rotation needed to distinguish
+    # base- and tool-frame contracts. Existing self-test environments set False.
+    frame_capable: bool
 
     def step(self, raw_action: Tensor) -> Tensor:
         """Apply one raw action; return the observed response (batch, channels)."""
@@ -67,6 +70,7 @@ class SyntheticProbeEnvironment:
         self._decoder = CompleteActionDecoder(contract, batch_size=batch_size)
         self.batch_size = batch_size
         self.channels = 7 if response.has_gripper else 6
+        self.frame_capable = False
         self._response = response
         self._noise = noise
         self._generator = torch.Generator().manual_seed(seed)
@@ -200,4 +204,5 @@ def identify_contract(
         probe_steps=float(probe_steps.mean()),
         probe_displacement=float(displacement.mean()),
         strategy=strategy,
+        frame_capable=bool(getattr(environment, "frame_capable", False)),
     )

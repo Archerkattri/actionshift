@@ -39,6 +39,7 @@ class RealProbeEnvironment:
         self._previous = observation
         self.batch_size = num_envs
         self.channels = 7 if calibration.has_gripper else 6
+        self.frame_capable = False
         self._calibration = calibration
 
     def step(self, raw_action: Tensor) -> Tensor:

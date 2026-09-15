@@ -36,7 +36,7 @@ def make_tcp_rotation_provider(environment: Any) -> Callable[[], Tensor]:
     batched ``(num_envs, 3, 3)`` rotation, on the simulator's device. This is the
     real-rotation hook the v2 benchmark variant threads into the hidden wrapper so
     that ``frame="tool"`` contracts are decoded against a genuinely non-identity
-    end-effector axis rather than the identity placeholder.
+    end-effector axis rather than the neutral-frame baseline.
     """
 
     def provider() -> Tensor:
@@ -201,7 +201,7 @@ def _make_environment(
         **extra,
     )
     # Real-rotation variant (v2): the wrapper decodes tool-frame twists against the
-    # live tcp orientation instead of the identity placeholder. Reads the raw env's
+    # live tcp orientation instead of the neutral-frame baseline. Reads the raw env's
     # tcp pose on each step. Default "identity" keeps every v1 result reproducible.
     provider = make_tcp_rotation_provider(base) if rotation_mode == "real" else None
     if condition == "identity":

@@ -73,9 +73,42 @@ def _run_command(command: list[str]) -> subprocess.CompletedProcess[str]:
 
 
 def _total_memory_bytes() -> int:
+    # ``os.sysconf`` is POSIX-only.  Provenance capture is also used by the
+    # Windows release runner, so keep the hardware field best-effort without
+    # allowing a platform probe to abort an otherwise valid artifact.
+    if hasattr(os, "sysconf"):
+        try:
+            return int(os.sysconf("SC_PAGE_SIZE")) * int(os.sysconf("SC_PHYS_PAGES"))
+        except (OSError, ValueError, AttributeError):
+            pass
     try:
-        return int(os.sysconf("SC_PAGE_SIZE")) * int(os.sysconf("SC_PHYS_PAGES"))
-    except (OSError, ValueError):
+        import ctypes
+
+        class _MemoryStatusEx(ctypes.Structure):
+            _fields_ = [
+                ("dwLength", ctypes.c_ulong),
+                ("dwMemoryLoad", ctypes.c_ulong),
+                ("ullTotalPhys", ctypes.c_ulonglong),
+                ("ullAvailPhys", ctypes.c_ulonglong),
+                ("ullTotalPageFile", ctypes.c_ulonglong),
+                ("ullAvailPageFile", ctypes.c_ulonglong),
+                ("ullTotalVirtual", ctypes.c_ulonglong),
+                ("ullAvailVirtual", ctypes.c_ulonglong),
+                ("ullAvailExtendedVirtual", ctypes.c_ulonglong),
+            ]
+
+        status = _MemoryStatusEx()
+        status.dwLength = ctypes.sizeof(_MemoryStatusEx)
+        windll = getattr(ctypes, "windll", None)
+        if windll is not None and windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(status)):
+            return int(status.ullTotalPhys)
+    except (AttributeError, OSError, TypeError):
+        pass
+    try:
+        import psutil  # type: ignore
+
+        return int(psutil.virtual_memory().total)
+    except (ImportError, AttributeError, OSError, ValueError):
         return 0
 
 
