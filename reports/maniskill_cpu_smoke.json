@@ -44,7 +44,7 @@
         1,
         7
       ],
-      "elapsed_seconds": 0.12012344700633548,
+      "elapsed_seconds": 0.2941480800000136,
       "environment_id": "PegInsertionSide-v1",
       "finite_observations": true,
       "maximum_decode_error": 4.656612873077393e-10,
@@ -61,7 +61,7 @@
         1,
         7
       ],
-      "elapsed_seconds": 0.010886017989832908,
+      "elapsed_seconds": 0.036898057999906086,
       "environment_id": "PickCube-v1",
       "finite_observations": true,
       "maximum_decode_error": 4.656612873077393e-10,
@@ -73,18 +73,52 @@
       "steps": 3,
       "success_seen": false
     },
+    "pull_cube": {
+      "action_shape": [
+        1,
+        7
+      ],
+      "elapsed_seconds": 0.022708957999839186,
+      "environment_id": "PullCube-v1",
+      "finite_observations": true,
+      "maximum_decode_error": 4.656612873077393e-10,
+      "observation_shape": [
+        1,
+        35
+      ],
+      "oracle_records": 3,
+      "steps": 3,
+      "success_seen": false
+    },
     "push_cube": {
       "action_shape": [
         1,
         7
       ],
-      "elapsed_seconds": 0.007893062982475385,
+      "elapsed_seconds": 0.023467926999956035,
       "environment_id": "PushCube-v1",
       "finite_observations": true,
       "maximum_decode_error": 4.656612873077393e-10,
       "observation_shape": [
         1,
         35
+      ],
+      "oracle_records": 3,
+      "steps": 3,
+      "success_seen": false
+    },
+    "stack_cube": {
+      "action_shape": [
+        1,
+        7
+      ],
+      "elapsed_seconds": 0.04434166200007894,
+      "environment_id": "StackCube-v1",
+      "finite_observations": true,
+      "maximum_decode_error": 4.656612873077393e-10,
+      "observation_shape": [
+        1,
+        48
       ],
       "oracle_records": 3,
       "steps": 3,
