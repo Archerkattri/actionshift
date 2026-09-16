@@ -123,6 +123,23 @@ def _different(
     return candidates[int(rng.integers(0, len(candidates)))]
 
 
+def _scale_endpoint(first: ActionContract, *, outside_grammar: bool) -> ActionContract:
+    """Keep discrete semantics fixed and choose a scale-ramp endpoint."""
+    if outside_grammar:
+        endpoint = tuple(1.25 + 0.05 * i for i in range(len(first.scale)))
+    else:
+        endpoint = tuple(1.5 if value <= 1.0 else 1.0 for value in first.scale)
+    return ActionContract(
+        permutation=first.permutation,
+        sign=first.sign,
+        scale=endpoint,
+        target=first.target,
+        frame=first.frame,
+        lag=first.lag,
+        gripper_inverted=first.gripper_inverted,
+    )
+
+
 def generate_compound_episode(
     kind: str,
     *,
@@ -147,7 +164,9 @@ def generate_compound_episode(
         raise ValueError("core contract pool is empty")
     first = pool[int(rng.integers(0, len(pool)))]
     second = _different(pool, first, rng)
-    if outside_grammar:
+    if kind == "gradual":
+        second = _scale_endpoint(first, outside_grammar=outside_grammar)
+    elif outside_grammar:
         second = _outside_contract(second)
 
     if kind == "static":
@@ -162,7 +181,28 @@ def generate_compound_episode(
         base, remainder = divmod(steps, count)
         spans = [base + (1 if i < remainder else 0) for i in range(count)]
 
-    contracts = [first if i % 2 == 0 else second for i in range(len(spans))]
+    if kind == "gradual":
+        contracts = []
+        denominator = max(1, len(spans) - 1)
+        for index in range(len(spans)):
+            fraction = index / denominator
+            scale = tuple(
+                (1.0 - fraction) * start + fraction * stop
+                for start, stop in zip(first.scale, second.scale, strict=True)
+            )
+            contracts.append(
+                ActionContract(
+                    permutation=first.permutation,
+                    sign=first.sign,
+                    scale=scale,
+                    target=first.target,
+                    frame=first.frame,
+                    lag=first.lag,
+                    gripper_inverted=first.gripper_inverted,
+                )
+            )
+    else:
+        contracts = [first if i % 2 == 0 else second for i in range(len(spans))]
     if kind == "static":
         contracts = [first]
     cursor = 0

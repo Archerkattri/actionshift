@@ -127,6 +127,14 @@ over the declared contract pool — then act on the maximum-a-posteriori contrac
 `unseen_composition` (zero contract- and composition-signature overlap with training), `long_lag`, and
 `task_transfer`. Materialized manifests make the disjointness test-enforced and reproducible.
 
+**Compound-shift challenge.** The frozen CPU protocol in
+`experiments/manifests/compound-challenge-v1.json` adds static, abrupt, gradual, recurring, and
+outside-grammar episodes. Its public adapter ABI never carries a contract or contract hash, enforces
+the same episode/action envelope plus declared probe budgets, and accepts third-party adapters by
+`module:factory` without simulator-core edits. `actionshift-evaluate challenge-smoke OUTPUT.json`
+runs the privileged oracle and no-adaptation controls; add `--adapter package.module:factory` to check
+an external adapter. This is a protocol and integration smoke, not a ManiSkill performance result.
+
 **Tasks.** Four competence-gated ManiSkill tasks — PickCube-v1, PushCube-v1, PullCube-v1,
 StackCube-v1. PegInsertionSide-v1 is honestly **excluded** on backbone competence (0/100 at the full
 official 75M-step budget; see `reports/peg_retry.md`).

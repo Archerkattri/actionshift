@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from itertools import pairwise
 
 import pytest
 
@@ -37,9 +38,19 @@ def test_outside_grammar_case_is_explicit_and_not_in_core_pool() -> None:
     assert len(episode.private_manifest()["contract_sha256"]) == 2
 
 
+def test_gradual_case_is_a_monotone_scale_ramp_not_repeated_abrupt_switches() -> None:
+    episode = generate_compound_episode("gradual", seed=19, steps=64)
+    contracts = [segment.contract for segment in episode.segments]
+    assert len(contracts) > 2
+    assert all(contract.permutation == contracts[0].permutation for contract in contracts)
+    assert all(contract.sign == contracts[0].sign for contract in contracts)
+    scales = [contract.scale[0] for contract in contracts]
+    differences = [right - left for left, right in pairwise(scales)]
+    assert all(value > 0 for value in differences) or all(value < 0 for value in differences)
+
+
 def test_invalid_schedule_inputs_are_rejected() -> None:
     with pytest.raises(ValueError):
         generate_compound_episode("unknown", seed=1)
     with pytest.raises(ValueError):
         generate_compound_episode("static", seed=1, steps=7)
-

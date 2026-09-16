@@ -1,0 +1,527 @@
+{
+  "budget": {
+    "episode_steps": 64,
+    "max_action_linf": 1.0,
+    "max_probe_linf": 0.5,
+    "max_probe_steps": 6
+  },
+  "cases": [
+    {
+      "outside_grammar": false,
+      "shift_kind": "static"
+    },
+    {
+      "outside_grammar": false,
+      "shift_kind": "abrupt"
+    },
+    {
+      "outside_grammar": false,
+      "shift_kind": "gradual"
+    },
+    {
+      "outside_grammar": false,
+      "shift_kind": "recurring"
+    },
+    {
+      "outside_grammar": true,
+      "shift_kind": "abrupt"
+    }
+  ],
+  "challenge_version": "compound-challenge-v1",
+  "claim_boundary": "CPU protocol smoke; not a ManiSkill performance result",
+  "episodes": [
+    {
+      "episode_id": "2cbbe88402906071",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260718,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "static",
+      "steps": 64
+    },
+    {
+      "episode_id": "730629754c0d498a",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260718,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "abrupt",
+      "steps": 64
+    },
+    {
+      "episode_id": "70f120da63700bb1",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260718,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 8
+        },
+        {
+          "start": 8,
+          "stop": 16
+        },
+        {
+          "start": 16,
+          "stop": 24
+        },
+        {
+          "start": 24,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 40
+        },
+        {
+          "start": 40,
+          "stop": 48
+        },
+        {
+          "start": 48,
+          "stop": 56
+        },
+        {
+          "start": 56,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "gradual",
+      "steps": 64
+    },
+    {
+      "episode_id": "b3e86fca22af05ac",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260718,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 16
+        },
+        {
+          "start": 16,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 48
+        },
+        {
+          "start": 48,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "recurring",
+      "steps": 64
+    },
+    {
+      "episode_id": "730629754c0d498a",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": true,
+      "schema_version": "1.0",
+      "seed": 20260718,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "abrupt",
+      "steps": 64
+    },
+    {
+      "episode_id": "1284aba4c21227cd",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260719,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "static",
+      "steps": 64
+    },
+    {
+      "episode_id": "84abb686bceea07b",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260719,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "abrupt",
+      "steps": 64
+    },
+    {
+      "episode_id": "f2fff562c3155ce7",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260719,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 8
+        },
+        {
+          "start": 8,
+          "stop": 16
+        },
+        {
+          "start": 16,
+          "stop": 24
+        },
+        {
+          "start": 24,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 40
+        },
+        {
+          "start": 40,
+          "stop": 48
+        },
+        {
+          "start": 48,
+          "stop": 56
+        },
+        {
+          "start": 56,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "gradual",
+      "steps": 64
+    },
+    {
+      "episode_id": "97f8d6c8174121a2",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260719,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 16
+        },
+        {
+          "start": 16,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 48
+        },
+        {
+          "start": 48,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "recurring",
+      "steps": 64
+    },
+    {
+      "episode_id": "84abb686bceea07b",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": true,
+      "schema_version": "1.0",
+      "seed": 20260719,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "abrupt",
+      "steps": 64
+    },
+    {
+      "episode_id": "9f01406f49d152b5",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260720,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "static",
+      "steps": 64
+    },
+    {
+      "episode_id": "2770be5eb98967b8",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260720,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "abrupt",
+      "steps": 64
+    },
+    {
+      "episode_id": "36056e117485f017",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260720,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 8
+        },
+        {
+          "start": 8,
+          "stop": 16
+        },
+        {
+          "start": 16,
+          "stop": 24
+        },
+        {
+          "start": 24,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 40
+        },
+        {
+          "start": 40,
+          "stop": 48
+        },
+        {
+          "start": 48,
+          "stop": 56
+        },
+        {
+          "start": 56,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "gradual",
+      "steps": 64
+    },
+    {
+      "episode_id": "bd43a48032b166a1",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": false,
+      "schema_version": "1.0",
+      "seed": 20260720,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 16
+        },
+        {
+          "start": 16,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 48
+        },
+        {
+          "start": 48,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "recurring",
+      "steps": 64
+    },
+    {
+      "episode_id": "2770be5eb98967b8",
+      "generator_version": "compound-shift-v1",
+      "outside_grammar": true,
+      "schema_version": "1.0",
+      "seed": 20260720,
+      "segment_boundaries": [
+        {
+          "start": 0,
+          "stop": 32
+        },
+        {
+          "start": 32,
+          "stop": 64
+        }
+      ],
+      "shift_kind": "abrupt",
+      "steps": 64
+    }
+  ],
+  "methods": [
+    {
+      "claim_label": "privileged_ceiling",
+      "max_probe_steps": 0,
+      "name": "oracle",
+      "privileges": [
+        "true_contract"
+      ]
+    },
+    {
+      "claim_label": "local_matched_budget_implementation",
+      "max_probe_steps": 0,
+      "name": "no_adapt",
+      "privileges": []
+    },
+    {
+      "claim_label": "local_matched_budget_implementation",
+      "max_probe_steps": 0,
+      "name": "domain_randomized",
+      "privileges": []
+    },
+    {
+      "claim_label": "local_matched_budget_implementation",
+      "max_probe_steps": 0,
+      "name": "recurrent",
+      "privileges": []
+    },
+    {
+      "claim_label": "local_matched_budget_implementation",
+      "max_probe_steps": 0,
+      "name": "osi",
+      "privileges": []
+    },
+    {
+      "claim_label": "local_matched_budget_implementation",
+      "max_probe_steps": 0,
+      "name": "rma",
+      "privileges": [
+        "teacher_contract_during_training"
+      ]
+    },
+    {
+      "claim_label": "local_matched_budget_implementation",
+      "max_probe_steps": 6,
+      "name": "random_probes",
+      "privileges": [
+        "bounded_active_probe"
+      ]
+    },
+    {
+      "claim_label": "local_matched_budget_implementation",
+      "max_probe_steps": 6,
+      "name": "fixed_probes",
+      "privileges": [
+        "bounded_active_probe"
+      ]
+    },
+    {
+      "claim_label": "experimental_method",
+      "max_probe_steps": 6,
+      "name": "dualabi",
+      "privileges": [
+        "bounded_active_probe"
+      ]
+    },
+    {
+      "claim_label": "experimental_ablation",
+      "max_probe_steps": 6,
+      "name": "dualabi_entropy",
+      "privileges": [
+        "bounded_active_probe"
+      ]
+    }
+  ],
+  "protocol_sha256": "591c9adf2069be6bd2a37b9e5497602265a1bfb9885a9b89f4182c534e01a2e9",
+  "schema_version": "1.0",
+  "seeds": [
+    20260718,
+    20260719,
+    20260720
+  ],
+  "sources": [
+    {
+      "path": "src/actionshift/contracts/compound.py",
+      "sha256": "63fca1e490138c110f06de9272e18a621cadc4efbd74a54598e4d70e999e09f6"
+    },
+    {
+      "path": "src/actionshift/contracts/transforms.py",
+      "sha256": "d15cb8006026b732c015f782be3a1f7e25df17f68f5d83da7d550bd94298b968"
+    },
+    {
+      "path": "src/actionshift/evaluation/challenge.py",
+      "sha256": "97e0ce41eb3392fc2fb9468fd7a0385c91212c73904bf3a6f2f9439358ac6623"
+    },
+    {
+      "path": "configs/evaluation/headline.yaml",
+      "sha256": "ba652879283b931cafc4c82517b016b38bd37b39fb0f781a4ed067fdfb165f11"
+    },
+    {
+      "path": "configs/sprint/sources.yaml",
+      "sha256": "e6e55adcccb0367a97c0f89a3efdb1b5aec663a55926694c9e0e72059bff9c66"
+    },
+    {
+      "path": "configs/split/manifests/seen.json",
+      "sha256": "dd2170d5d34580e5f1a22b68576cf4dbb5441662e9deec83b29a08905bdbf45e"
+    },
+    {
+      "path": "configs/split/manifests/unseen_value.json",
+      "sha256": "c06b928dfd4c34849534a8a25155d5e195e8796bbaf3a9e6285d140c91329b0d"
+    },
+    {
+      "path": "configs/split/manifests/unseen_composition.json",
+      "sha256": "24f3f0ee097f9171deba1d67806c4ca2b41faf7acd5de36bc57d8e89d9fb00dc"
+    },
+    {
+      "path": "configs/split/manifests/long_lag.json",
+      "sha256": "c077b7c77446708192090607ca45fb67c6672ed81064191d049f228aec8899a9"
+    },
+    {
+      "path": "configs/split/manifests/task_transfer.json",
+      "sha256": "e10a6c07dd41e251cd818b8c253e7685138cf94e07a6e381b1d633e226863d6e"
+    }
+  ],
+  "status": "FROZEN"
+}
