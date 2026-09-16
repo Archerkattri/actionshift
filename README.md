@@ -29,11 +29,6 @@ is active.*
 plug-and-verify run. Full steps, plus the ManiSkill extras, in [Install and quickstart](#install-and-quickstart).
 
 ## Part of the Action-Interface pair
-## Architecture at a glance
-
-![actionshift-current architecture](media/readme_flow.svg)
-
-The adapter first identifies the hidden action contract with bounded probes, then translates the frozen policy’s canonical actions before execution.
 
 ActionShift is one half of a two-project attack on the **hidden action-interface contract** problem —
 when the meaning of a robot's action numbers is undocumented or silently changed. Its sibling,
