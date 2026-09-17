@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>actionshift — Benchmark and research harness for manipulation policies adapting to hidden compositional action-interface contracts</title>
+<meta name="description" content="ActionShift is a benchmark and research harness for manipulation policies whose action interface changes without exposing the active contract to the agent. It freezes disjoint generalization splits and measures adaptation on real ManiSkill tasks (PickCube, PushCube, PullCube, StackCube).">
+<style>
+  :root{
+    --bg:#ffffff; --ink:#17202a; --muted:#5a6572; --line:#e3e8ee;
+    --accent:#0c52d6; --accent-ink:#0c52d6; --code-bg:#f4f6f8; --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    font-size:16px;line-height:1.6}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  /* top bar */
+  .top{border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:baseline;gap:14px;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+  .top .repo{font-weight:700;font-size:17px;color:var(--ink)}
+  .top .repo a{color:var(--ink)}
+  .top .ver{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);padding:1px 8px;border-radius:20px}
+  .top nav{margin-left:auto;display:flex;gap:16px;font-size:14px}
+  /* hero */
+  .hero{padding:34px 0 8px}
+  .hero img.banner{width:100%;height:auto;border:1px solid var(--line);display:block}
+  .hero h1{font-size:30px;line-height:1.25;margin:22px 0 6px;letter-spacing:-0.01em}
+  .hero p.lede{color:var(--muted);margin:0 0 14px;max-width:62ch}
+  pre{background:var(--code-bg);border:1px solid var(--line);padding:12px 14px;overflow-x:auto;
+    font-family:var(--mono);font-size:13px;line-height:1.55;margin:0 0 8px}
+  pre .c{color:#6a737d}
+  /* sections */
+  section{padding:26px 0 6px;border-top:1px solid var(--line);margin-top:26px}
+  section:first-of-type{border-top:0}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+  .sec-num{font-family:var(--mono);font-size:13px;color:var(--accent-ink);font-weight:700}
+  .sec-head h2{font-size:20px;margin:0}
+  table.ev{width:100%;border-collapse:collapse;font-size:14px}
+  table.ev th,table.ev td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  table.ev th{color:var(--muted);font-weight:600;width:34%}
+  table.ev td b{font-variant-numeric:tabular-nums}
+  .ok{color:#0a7b3c;font-weight:700}
+  .gallery{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .gallery figure{margin:0;border:1px solid var(--line)}
+  .gallery img,.gallery video{width:100%;height:auto;display:block}
+  .gallery figcaption{font-size:13px;color:var(--muted);padding:8px 10px;border-top:1px solid var(--line)}
+  .limits{background:#fbfcfd;border:1px solid var(--line);padding:14px 16px;font-size:14px}
+  .limits ul{margin:8px 0 0;padding-left:20px}
+  .limits li{margin:4px 0}
+  footer{border-top:1px solid var(--line);margin-top:30px;padding:16px 0 30px;color:var(--muted);font-size:13px}
+  footer .wrap{display:flex;gap:16px;flex-wrap:wrap}
+  @media (max-width:640px){.gallery{grid-template-columns:1fr}.hero h1{font-size:24px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <span class="repo"><a href="https://github.com/Archerkattri/actionshift">actionshift</a></span>
+  <span class="ver">1.1.0</span>
+  <nav><a href="https://github.com/Archerkattri/actionshift">Code</a><a href="https://github.com/Archerkattri/actionshift/releases/tag/v1.1.0">Release</a> <a href="https://pypi.org/project/actionshift/">PyPI</a></nav>
+</div></header>
+<main class="wrap">
+  <div class="hero">
+    <img class="banner" src="assets/hero_triptych.gif" alt="actionshift banner">
+    <h1>Benchmark for policies adapting to hidden action-interface contracts</h1>
+    <p class="lede">ActionShift is a benchmark and research harness for manipulation policies whose action interface changes without exposing the active contract to the agent. It freezes disjoint generalization splits and measures adaptation on real ManiSkill tasks (PickCube, PushCube, PullCube, StackCube).</p>
+    <pre>python -m venv .venv
+.venv/bin/pip install -e '.[dev,maniskill]'
+
+<span class="c"># static gates</span>
+.venv/bin/ruff check src tests experiments
+.venv/bin/mypy src
+.venv/bin/pytest -q
+
+<span class="c"># plug-and-verify self-test: is this robot wired the way the policy thinks?</span>
+.venv/bin/actionshift-selftest --demo swapped-axes --json
+
+<span class="c"># real ManiSkill integration smoke (requires the maniskill extra)</span>
+.venv/bin/actionshift-smoke --sim-backend cpu --output reports/maniskill_cpu_smoke.json</pre>
+  </div>
+  <section><div class="sec-head"><span class="sec-num">01</span><h2>Evidence</h2></div>
+    <table class="ev"><tr><th>Adaptation ladder, PickCube/seen</th><td><b>0.987</b> pool-privileged belief vs 1.000 privileged-oracle ceiling, from a 0.000 no-adaptation floor</td></tr><tr><th>Probe efficiency (DualABI)</th><td><b>2.89 vs 6.00</b> mean probe steps (−52%) and −42% displacement, success tied with the entropy champion across 4 cells</td></tr><tr><th>Long-lag split, delay-aware PPO</th><td><b>0.528</b> Pick (~20×) and 0.415 Push (~2.7×) vs frozen-oracle 0.027/0.153, Wilson 95% intervals</td></tr><tr><th>Imitation brittleness and rescue</th><td><b>0.580 → 0.003</b> Diffusion Policy collapse under hidden contracts, rescued to 0.620 by the same belief adapters</td></tr><tr><th>Entropy-guided probing, Pick/seen</th><td><b>+5.8 pts</b> [+3.7, +8.2] over fixed probing (paired 95% bootstrap, 600 episodes), clears the preregistered 5-point gate</td></tr><tr><th>Absolute-mode wall breached</th><td><b>0.790</b> Pick / 0.722 Push from 0.000/0.005 via hold-probe excitation, with exact permutation recovery</td></tr><tr><th>Test suite, this release</th><td><b>320 passed</b>, 10 skipped; mypy --strict clean on 78 files; ruff clean</td></tr></table>
+  </section>
+  <section><div class="sec-head"><span class="sec-num">02</span><h2>Media</h2></div>
+    <div class="gallery"><figure><img src="assets/plot_method_ladder.png"><figcaption>The adaptation ladder on PickCube/seen: 0.000 floor to 0.987 pool belief to the 1.000 oracle ceiling.</figcaption></figure><figure><img src="assets/plot_probe_pareto.png"><figcaption>Probe-cost Pareto: DualABI ties the top success at ~2.9 vs 6.0 probe steps.</figcaption></figure><figure><img src="assets/plot_lag_solve.png"><figcaption>Long-lag split: delay-aware PPO lifts Pick 0.027 to 0.528 and Push 0.153 to 0.415.</figcaption></figure><figure><img src="assets/selftest_demos.png"><figcaption>actionshift-selftest transcripts: PASS, MISMATCH with the exact diff, and fail-closed INCONCLUSIVE.</figcaption></figure></div>
+  </section>
+  <section><div class="sec-head"><span class="sec-num">03</span><h2>Install &amp; verify</h2></div>
+    <pre><span class="c"># static gates: ruff clean; mypy --strict clean on 78 files</span>
+.venv/bin/ruff check src tests
+.venv/bin/mypy src
+<span class="c"># 320 passed, 10 skipped (ManiSkill-gated tests skip without the extra)</span>
+.venv/bin/pytest -q</pre>
+  </section>
+  <section><div class="sec-head"><span class="sec-num">04</span><h2>Limits</h2></div>
+    <div class="limits"><p style="margin:0">What this release does <b>not</b> claim (from the release notes):</p><ul><li>Learned-policy success, matched-budget controls, GPU tournament runs, and the final challenge matrix remain unmeasured.</li></ul></div>
+  </section>
+</main>
+<footer><div class="wrap"><span>MIT · © 2026 Krishi Attri</span><span>Krishi Attri, ActionShift, 1.1.0, https://doi.org/10.5281/zenodo.21500713</span><span style="margin-left:auto"><a href="https://github.com/Archerkattri/actionshift">actionshift</a></span></div></footer>
+</body>
+</html>
