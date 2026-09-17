@@ -8,7 +8,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-0d9488.svg)](LICENSE)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-3776ab.svg)](pyproject.toml)
 [![ManiSkill 3](https://img.shields.io/badge/sim-ManiSkill%203-d97706.svg)](https://github.com/haosulab/ManiSkill)
-[![Tests](https://img.shields.io/badge/tests-300%20passing-16a34a.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-320%20passing-16a34a.svg)](tests/)
 
 > **What happens to a trained robot policy when the meaning of its action numbers silently changes —
 > and can it recover on its own, without ever being told?**
@@ -930,7 +930,7 @@ repository does not redistribute them. Dataset and simulator assets retain their
 ## Current release status
 
 The current checkout has a real CPU ManiSkill/SAPIEN smoke covering
-PegInsertionSide, PickCube, PullCube, PushCube and StackCube, with 317 tests
-passing and 5 skips. Compound-shift contracts and provenance checks are
+PegInsertionSide, PickCube, PullCube, PushCube and StackCube, with 320 tests
+passing and 10 skips. Compound-shift contracts and provenance checks are
 closed. Learned-policy success, matched-budget controls, GPU runs and the final
 challenge matrix remain unmeasured.

@@ -54,7 +54,9 @@ line-length = 100
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 
 [tool.mypy]
-python_version = "3.11"
+# 3.12 target: numpy>=2.5 bundled stubs use PEP 695 syntax, unparseable as
+# 3.11. Runtime 3.11 support is unchanged and still guarded by CI pytest.
+python_version = "3.12"
 strict = true
 packages = ["actionshift"]
 mypy_path = "src"
