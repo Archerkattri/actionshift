@@ -89,7 +89,10 @@ def _update_log_belief(
     likelihood = -0.5 * np.sum(((predictions - observed_effect) / 0.02) ** 2, axis=1)
     updated = log_probabilities + likelihood
     maximum = float(np.max(updated))
-    return updated - (maximum + math.log(float(np.exp(updated - maximum).sum())))
+    normalized: FloatArray = updated - (
+        maximum + math.log(float(np.exp(updated - maximum).sum()))
+    )
+    return normalized
 
 
 def _task_candidates(
