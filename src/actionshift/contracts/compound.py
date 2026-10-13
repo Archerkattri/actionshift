@@ -82,21 +82,21 @@ class CompoundShiftEpisode:
         return {
             "schema_version": "1.0",
             "generator_version": GENERATOR_VERSION,
-            "episode_id": self.episode_id,
-            "seed": self.seed,
             "steps": self.steps,
             "shift_kind": self.shift_kind,
             "segment_boundaries": [
                 {"start": segment.start, "stop": segment.stop}
                 for segment in self.segments
             ],
-            "outside_grammar": self.outside_grammar,
         }
 
     def private_manifest(self) -> dict[str, object]:
         """Return evaluator-only identity without serializing raw semantics by default."""
         return {
             **self.public_manifest(),
+            "episode_id": self.episode_id,
+            "seed": self.seed,
+            "outside_grammar": self.outside_grammar,
             "contract_sha256": [segment.contract_sha256 for segment in self.segments],
         }
 

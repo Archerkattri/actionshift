@@ -1,0 +1,146 @@
+{
+  "protocol": {
+    "budget": {
+      "episode_steps": 64,
+      "max_action_linf": 1.0,
+      "max_probe_linf": 0.5,
+      "max_probe_steps": 6
+    },
+    "cases": [
+      {
+        "outside_grammar": false,
+        "shift_kind": "static"
+      },
+      {
+        "outside_grammar": false,
+        "shift_kind": "abrupt"
+      },
+      {
+        "outside_grammar": false,
+        "shift_kind": "gradual"
+      },
+      {
+        "outside_grammar": false,
+        "shift_kind": "recurring"
+      },
+      {
+        "outside_grammar": true,
+        "shift_kind": "abrupt"
+      }
+    ],
+    "challenge_version": "compound-challenge-v1",
+    "claim_boundary": "CPU protocol smoke; not a ManiSkill performance result",
+    "methods": [
+      {
+        "claim_label": "privileged_ceiling",
+        "max_probe_steps": 0,
+        "name": "oracle",
+        "privileges": ["true_contract"]
+      },
+      {
+        "claim_label": "local_matched_budget_implementation",
+        "max_probe_steps": 0,
+        "name": "no_adapt",
+        "privileges": []
+      },
+      {
+        "claim_label": "local_matched_budget_implementation",
+        "max_probe_steps": 0,
+        "name": "domain_randomized",
+        "privileges": []
+      },
+      {
+        "claim_label": "local_matched_budget_implementation",
+        "max_probe_steps": 0,
+        "name": "recurrent",
+        "privileges": []
+      },
+      {
+        "claim_label": "local_matched_budget_implementation",
+        "max_probe_steps": 0,
+        "name": "osi",
+        "privileges": []
+      },
+      {
+        "claim_label": "local_matched_budget_implementation",
+        "max_probe_steps": 0,
+        "name": "rma",
+        "privileges": ["teacher_contract_during_training"]
+      },
+      {
+        "claim_label": "local_matched_budget_implementation",
+        "max_probe_steps": 6,
+        "name": "random_probes",
+        "privileges": ["bounded_active_probe"]
+      },
+      {
+        "claim_label": "local_matched_budget_implementation",
+        "max_probe_steps": 6,
+        "name": "fixed_probes",
+        "privileges": ["bounded_active_probe"]
+      },
+      {
+        "claim_label": "experimental_method",
+        "max_probe_steps": 6,
+        "name": "dualabi",
+        "privileges": ["bounded_active_probe"]
+      },
+      {
+        "claim_label": "experimental_ablation",
+        "max_probe_steps": 6,
+        "name": "dualabi_entropy",
+        "privileges": ["bounded_active_probe"]
+      }
+    ],
+    "schema_version": "1.0",
+    "seeds": [
+      20260718,
+      20260719,
+      20260720
+    ],
+    "sources": [
+      {
+        "path": "src/actionshift/contracts/compound.py",
+        "sha256": "2df8011914d5affb8629c57d95d3a10ff7321224f8af19dd91b1b05fbd3e9e69"
+      },
+      {
+        "path": "src/actionshift/contracts/transforms.py",
+        "sha256": "7edebda02e1dfa732b714d1a8695a515ee5118a90cdcccdde2e2d2bcd79ac15d"
+      },
+      {
+        "path": "src/actionshift/evaluation/challenge.py",
+        "sha256": "e2cea9e104564fe0a3ffe3e92527b9b29f929bc8d980298dc5035197d7675f0b"
+      },
+      {
+        "path": "configs/evaluation/headline.yaml",
+        "sha256": "745accec00f748b085a9e168c81734883e834cae2d5ea0abeca764319d8d9950"
+      },
+      {
+        "path": "configs/sprint/sources.yaml",
+        "sha256": "3a49abe8153ccd4362b2c309f3e8687bd6cc7a3527499d0b8acb20d80bea5f69"
+      },
+      {
+        "path": "configs/split/manifests/seen.json",
+        "sha256": "7ae858ed40a31063de8ab28d09e767056abe09cfb5dda59512e772182874f31c"
+      },
+      {
+        "path": "configs/split/manifests/unseen_value.json",
+        "sha256": "7a77f402ef4401b73984848e366bcc0b77accf0f647cea9012d353a48b08e486"
+      },
+      {
+        "path": "configs/split/manifests/unseen_composition.json",
+        "sha256": "1162c6cf055d3866388ac9c5a3ba3eec7e9e0e6aa79eee2659001a627e55fa05"
+      },
+      {
+        "path": "configs/split/manifests/long_lag.json",
+        "sha256": "03c62046c6db163db723665a42b6be64e1c48fa6636743fa541c0c6ae17cb7a8"
+      },
+      {
+        "path": "configs/split/manifests/task_transfer.json",
+        "sha256": "15e003991c585cf210cb13df1efbd808413fe768c29715fca5e0d5f098500e10"
+      }
+    ],
+    "status": "FROZEN"
+  },
+  "protocol_sha256": "af13447897b113488fbd20c7b17a8183e38be17b2f9682276ab091fe4d2e5cda"
+}

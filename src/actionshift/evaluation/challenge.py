@@ -16,6 +16,7 @@ import os
 import platform
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import asdict, dataclass
+from importlib import resources
 from pathlib import Path
 from typing import Protocol, cast
 
@@ -92,6 +93,31 @@ class ChallengeAdapter(Protocol):
 AdapterFactory = Callable[..., ChallengeAdapter]
 
 
+def _protocol_episode_records(
+    cases: Sequence[Mapping[str, object]], *, seeds: Sequence[int], steps: int
+) -> list[dict[str, object]]:
+    records: list[dict[str, object]] = []
+    for seed in seeds:
+        for case in cases:
+            kind = case.get("shift_kind")
+            outside = case.get("outside_grammar")
+            if not isinstance(kind, str) or not isinstance(outside, bool):
+                raise ValueError("challenge case has an invalid shift kind or grammar label")
+            episode = generate_compound_episode(
+                kind, seed=seed, steps=steps, outside_grammar=outside
+            )
+            # The frozen protocol file is evaluator metadata, not an adapter input.
+            records.append(
+                {
+                    **episode.public_manifest(),
+                    "episode_id": episode.episode_id,
+                    "seed": episode.seed,
+                    "outside_grammar": episode.outside_grammar,
+                }
+            )
+    return records
+
+
 @dataclass(frozen=True, slots=True)
 class ChallengeMethodSpec:
     name: str
@@ -149,11 +175,9 @@ def load_adapter_factory(reference: str) -> AdapterFactory:
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    # Frozen source hashes must match across Windows CRLF and Linux/macOS LF checkouts.
+    contents = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(contents).hexdigest()
 
 
 def _protocol_digest(value: Mapping[str, object]) -> str:
@@ -189,12 +213,14 @@ def build_challenge_manifest(
             raise FileNotFoundError(absolute)
         sources.append({"path": relative.as_posix(), "sha256": _sha256(absolute)})
     budget = MethodBudget(steps, 6)
-    public_episodes = [
-        generate_compound_episode(kind, seed=seed, steps=steps, outside_grammar=outside)
-        .public_manifest()
-        for seed in seeds
-        for kind, outside in CHALLENGE_CASES
-    ]
+    public_episodes = _protocol_episode_records(
+        [
+            {"shift_kind": kind, "outside_grammar": outside}
+            for kind, outside in CHALLENGE_CASES
+        ],
+        seeds=seeds,
+        steps=steps,
+    )
     protocol: dict[str, object] = {
         "schema_version": "1.0",
         "challenge_version": CHALLENGE_VERSION,
@@ -216,6 +242,78 @@ def build_challenge_manifest(
     return {**protocol, "protocol_sha256": _protocol_digest(protocol)}
 
 
+def build_packaged_challenge_manifest(
+    *, seeds: Sequence[int] = DEFAULT_CHALLENGE_SEEDS, steps: int = 64
+) -> dict[str, object]:
+    """Build the frozen protocol from wheel data when no source checkout is present."""
+    if not seeds or any(seed < 0 for seed in seeds):
+        raise ValueError("seeds must be nonempty and nonnegative")
+    if steps < 8:
+        raise ValueError("steps must be >= 8")
+    resource = resources.files("actionshift.evaluation").joinpath(
+        "data/compound-challenge-v1.json"
+    )
+    packaged = json.loads(resource.read_text(encoding="utf-8"))
+    if not isinstance(packaged, dict):
+        raise ValueError("packaged challenge protocol must be a JSON object")
+    template = packaged.get("protocol")
+    expected_digest = packaged.get("protocol_sha256")
+    if not isinstance(template, dict) or not isinstance(expected_digest, str):
+        raise ValueError("packaged challenge protocol is incomplete")
+
+    package_sources = {
+        "src/actionshift/contracts/compound.py": Path(__file__).resolve().parents[1]
+        / "contracts"
+        / "compound.py",
+        "src/actionshift/contracts/transforms.py": Path(__file__).resolve().parents[1]
+        / "contracts"
+        / "transforms.py",
+        "src/actionshift/evaluation/challenge.py": Path(__file__).resolve(),
+    }
+    sources = template.get("sources")
+    if not isinstance(sources, list):
+        raise ValueError("packaged challenge protocol lacks source hashes")
+    for source in sources:
+        if not isinstance(source, dict):
+            raise ValueError("packaged challenge protocol has a malformed source record")
+        relative = source.get("path")
+        expected_source_hash = source.get("sha256")
+        packaged_path = package_sources.get(relative) if isinstance(relative, str) else None
+        if packaged_path is not None and (
+            not packaged_path.is_file() or _sha256(packaged_path) != expected_source_hash
+        ):
+            raise ValueError(f"installed challenge source differs from frozen protocol: {relative}")
+
+    base = dict(template)
+    base_seeds = base.get("seeds")
+    budget_value = base.get("budget")
+    cases = base.get("cases")
+    if (
+        not isinstance(base_seeds, list)
+        or not isinstance(budget_value, dict)
+        or not isinstance(cases, list)
+        or not all(isinstance(case, dict) for case in cases)
+    ):
+        raise ValueError("packaged challenge protocol has invalid seeds, budget, or cases")
+    base_steps = budget_value.get("episode_steps")
+    if isinstance(base_steps, bool) or not isinstance(base_steps, int):
+        raise ValueError("packaged challenge protocol has an invalid episode budget")
+    base["episodes"] = _protocol_episode_records(cases, seeds=base_seeds, steps=base_steps)
+    if _protocol_digest(base) != expected_digest:
+        raise ValueError("packaged challenge protocol digest does not match its frozen template")
+
+    if tuple(seeds) == tuple(base_seeds) and steps == base_steps:
+        return {**base, "protocol_sha256": expected_digest}
+
+    variant = dict(base)
+    variant["seeds"] = list(seeds)
+    variant_budget = dict(budget_value)
+    variant_budget["episode_steps"] = steps
+    variant["budget"] = variant_budget
+    variant["episodes"] = _protocol_episode_records(cases, seeds=seeds, steps=steps)
+    return {**variant, "protocol_sha256": _protocol_digest(variant)}
+
+
 def verify_challenge_manifest(manifest: Mapping[str, object]) -> None:
     supplied = manifest.get("protocol_sha256")
     if not isinstance(supplied, str):
@@ -225,8 +323,14 @@ def verify_challenge_manifest(manifest: Mapping[str, object]) -> None:
         raise ValueError("challenge manifest digest mismatch")
 
 
-def write_challenge_manifest(path: Path, repository_root: Path) -> dict[str, object]:
-    manifest = build_challenge_manifest(repository_root)
+def write_challenge_manifest(
+    path: Path, repository_root: Path | None = None
+) -> dict[str, object]:
+    manifest = (
+        build_challenge_manifest(repository_root)
+        if repository_root is not None
+        else build_packaged_challenge_manifest()
+    )
     if path.exists():
         existing = json.loads(path.read_text(encoding="utf-8"))
         if existing != manifest:
@@ -236,8 +340,8 @@ def write_challenge_manifest(path: Path, repository_root: Path) -> dict[str, obj
     return manifest
 
 
-def _canonical_action(seed: int, step: int, dimension: int) -> torch.Tensor:
-    phase = 0.31 * (step + 1) + (seed % 97) * 0.017
+def _canonical_action(action_seed: int, step: int, dimension: int) -> torch.Tensor:
+    phase = 0.31 * (step + 1) + (action_seed % 97) * 0.017
     values = [0.24 * math.sin(phase + index * 0.83) for index in range(dimension)]
     return torch.tensor(values, dtype=torch.float64)
 
@@ -271,13 +375,15 @@ def _run_episode(
     method: str,
     factory: AdapterFactory | None,
     max_probe_steps: int,
+    adapter_seed: int,
+    action_seed: int,
 ) -> dict[str, object]:
     dimension = len(episode.contract_at(0).permutation)
     budget = MethodBudget(episode.steps, max_probe_steps)
     adapter: ChallengeAdapter | None = None
     if method != "oracle":
         selected_factory = factory or identity_adapter_factory
-        adapter = selected_factory(seed=episode.seed, budget=budget)
+        adapter = selected_factory(seed=adapter_seed, budget=budget)
         for member in ("reset", "act", "observe"):
             if not callable(getattr(adapter, member, None)):
                 raise TypeError(f"adapter is missing callable {member}")
@@ -301,11 +407,11 @@ def _run_episode(
             active_segment = segment_index
             lag = ActionLag(steps=segment.contract.lag)
         assert lag is not None
-        canonical = _canonical_action(episode.seed, step, dimension)
+        canonical = _canonical_action(action_seed, step, dimension)
         if method == "oracle":
             future_step = step + segment.contract.lag
             future = (
-                _canonical_action(episode.seed, future_step, dimension)
+                _canonical_action(action_seed, future_step, dimension)
                 if future_step < segment.stop
                 else torch.zeros_like(canonical)
             )
@@ -367,7 +473,17 @@ def run_challenge(
     factory: AdapterFactory | None = None,
     seeds: Sequence[int] = DEFAULT_CHALLENGE_SEEDS,
     steps: int = 64,
+    adapter_seed: int = 0,
+    action_seed: int = 0,
 ) -> dict[str, object]:
+    if not seeds or any(seed < 0 for seed in seeds):
+        raise ValueError("seeds must be nonempty and nonnegative")
+    if adapter_seed < 0:
+        raise ValueError("adapter_seed must be nonnegative")
+    if action_seed < 0:
+        raise ValueError("action_seed must be nonnegative")
+    if steps < 8:
+        raise ValueError("steps must be >= 8")
     specs = {spec.name: spec for spec in challenge_method_specs()}
     if method == "external":
         if factory is None:
@@ -381,15 +497,21 @@ def run_challenge(
         privileges = specs[method].privileges
     else:
         raise ValueError(f"unknown challenge method: {method}")
+    episodes = [
+        generate_compound_episode(kind, seed=seed, steps=steps, outside_grammar=outside)
+        for seed in seeds
+        for kind, outside in CHALLENGE_CASES
+    ]
     records = [
         _run_episode(
-            generate_compound_episode(kind, seed=seed, steps=steps, outside_grammar=outside),
+            episode,
             method=method,
             factory=factory,
             max_probe_steps=max_probes,
+            adapter_seed=adapter_seed + index,
+            action_seed=action_seed,
         )
-        for seed in seeds
-        for kind, outside in CHALLENGE_CASES
+        for index, episode in enumerate(episodes)
     ]
     successes = 0
     post_lag_mse_total = 0.0
@@ -409,6 +531,8 @@ def run_challenge(
         "method": method,
         "privileges": list(privileges),
         "seeds": list(seeds),
+        "adapter_rng_seed": adapter_seed,
+        "action_seed": action_seed,
         "episode_count": len(records),
         "successes": successes,
         "mean_post_lag_mse": post_lag_mse_total / len(records),
@@ -423,6 +547,8 @@ def run_reference_smoke(
     seeds: Sequence[int] = DEFAULT_CHALLENGE_SEEDS,
     steps: int = 64,
     external_reference: str | None = None,
+    adapter_seed: int = 0,
+    action_seed: int = 0,
 ) -> dict[str, object]:
     if repository_root is None:
         required_files = (
@@ -437,15 +563,14 @@ def run_reference_smoke(
             ),
             None,
         )
-        if repository_root is None:
-            raise FileNotFoundError(
-                "run_reference_smoke needs an ActionShift checkout root; "
-                "pass repository_root or run it from inside the checkout"
-            )
-    protocol = build_challenge_manifest(repository_root, seeds=seeds, steps=steps)
+    protocol = (
+        build_challenge_manifest(repository_root, seeds=seeds, steps=steps)
+        if repository_root is not None
+        else build_packaged_challenge_manifest(seeds=seeds, steps=steps)
+    )
     methods = [
-        run_challenge(method="oracle", seeds=seeds, steps=steps),
-        run_challenge(method="no_adapt", seeds=seeds, steps=steps),
+        run_challenge(method="oracle", seeds=seeds, steps=steps, action_seed=action_seed),
+        run_challenge(method="no_adapt", seeds=seeds, steps=steps, action_seed=action_seed),
     ]
     if external_reference is not None:
         methods.append(
@@ -454,6 +579,8 @@ def run_reference_smoke(
                 factory=load_adapter_factory(external_reference),
                 seeds=seeds,
                 steps=steps,
+                adapter_seed=adapter_seed,
+                action_seed=action_seed,
             )
         )
     report: dict[str, object] = {
@@ -488,6 +615,7 @@ __all__ = [
     "ChallengeTransition",
     "MethodBudget",
     "build_challenge_manifest",
+    "build_packaged_challenge_manifest",
     "challenge_method_specs",
     "identity_adapter_factory",
     "load_adapter_factory",

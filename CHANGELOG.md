@@ -4,6 +4,20 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+
+- Bundle the frozen compound-shift protocol so installed wheels can run its
+  manifest and smoke workflows outside a source checkout.
+- Keep the hidden episode seed and outside-grammar label out of adapter inputs;
+  seed adapter randomness independently.
+- Normalize protocol source hashes across CRLF and LF checkouts.
+
+### Changed
+
+- Run Linux CI on Python 3.11 and 3.12 and document the tested platform boundary.
+
 ## [1.1.0] - 2026-09-17
 
 ### Added

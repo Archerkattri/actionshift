@@ -12,14 +12,12 @@ from actionshift.evaluation.challenge import (
     ChallengeTransition,
     MethodBudget,
     build_challenge_manifest,
-    challenge_method_specs,
+    build_packaged_challenge_manifest,
     load_adapter_factory,
     run_challenge,
     run_reference_smoke,
     verify_challenge_manifest,
-    write_challenge_manifest,
 )
-from actionshift.evaluation.matrix import METHODS
 
 
 class _SpyAdapter:
@@ -58,36 +56,36 @@ def test_frozen_manifest_is_complete_deterministic_and_self_verifying() -> None:
         verify_challenge_manifest(damaged)
 
 
-def test_manifest_writer_is_idempotent(tmp_path: Path) -> None:
+def test_packaged_protocol_matches_the_frozen_repository_protocol() -> None:
     root = Path(__file__).resolve().parents[2]
-    destination = tmp_path / "challenge.json"
-    first = write_challenge_manifest(destination, root)
-    second = write_challenge_manifest(destination, root)
-    assert first == second
-
-
-def test_method_envelopes_match_headline_matrix_and_share_episode_budget() -> None:
-    specs = challenge_method_specs()
-    assert tuple(spec.name for spec in specs) == METHODS
-    probing_budgets = {
-        spec.max_probe_steps
-        for spec in specs
-        if "probes" in spec.name or "dualabi" in spec.name
-    }
-    assert probing_budgets == {6}
-    assert next(spec for spec in specs if spec.name == "oracle").privileges == ("true_contract",)
+    frozen = json.loads(
+        (root / "experiments/manifests/compound-challenge-v1.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert build_packaged_challenge_manifest() == frozen
 
 
 def test_runner_covers_every_shift_and_keeps_contracts_out_of_adapter_abi() -> None:
     adapters: list[_SpyAdapter] = []
 
+    factory_seeds: list[int] = []
+
     def factory(*, seed: int, budget: MethodBudget) -> _SpyAdapter:
-        del seed, budget
+        factory_seeds.append(seed)
+        del budget
         adapter = _SpyAdapter()
         adapters.append(adapter)
         return adapter
 
-    report = run_challenge(method="external", factory=factory, seeds=(5,), steps=32)
+    report = run_challenge(
+        method="external",
+        factory=factory,
+        seeds=(5,),
+        steps=32,
+        adapter_seed=101,
+        action_seed=23,
+    )
     assert report["episode_count"] == len(CHALLENGE_CASES)
     observed_cases = {
         (record["shift_kind"], record["outside_grammar"])
@@ -98,10 +96,30 @@ def test_runner_covers_every_shift_and_keeps_contracts_out_of_adapter_abi() -> N
     for adapter in adapters:
         exposed = json.dumps(adapter.manifests, sort_keys=True)
         assert "contract" not in exposed
+        assert '"seed"' not in exposed
+        assert '"outside_grammar"' not in exposed
+        assert '"episode_id"' not in exposed
         assert len(adapter.observations) == 32
         assert len(adapter.transitions) == 32
-        assert not hasattr(adapter.observations[0], "contract")
-        assert not hasattr(adapter.transitions[0], "contract")
+        for value in (*adapter.observations, *adapter.transitions):
+            for private_field in ("contract", "seed", "outside_grammar", "episode_id"):
+                assert not hasattr(value, private_field)
+    assert factory_seeds == list(range(101, 101 + len(CHALLENGE_CASES)))
+
+    paired_adapters: list[_SpyAdapter] = []
+
+    def paired_factory(*, seed: int, budget: MethodBudget) -> _SpyAdapter:
+        del seed, budget
+        adapter = _SpyAdapter()
+        paired_adapters.append(adapter)
+        return adapter
+
+    run_challenge(
+        method="external", factory=paired_factory, seeds=(6,), steps=32, action_seed=23
+    )
+    assert paired_adapters[0].observations[0].canonical_action == adapters[0].observations[
+        0
+    ].canonical_action
 
 
 def test_oracle_is_a_labeled_ceiling_and_reference_smoke_is_cpu_only(tmp_path: Path) -> None:

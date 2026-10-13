@@ -474,7 +474,7 @@
       ]
     }
   ],
-  "protocol_sha256": "591c9adf2069be6bd2a37b9e5497602265a1bfb9885a9b89f4182c534e01a2e9",
+  "protocol_sha256": "af13447897b113488fbd20c7b17a8183e38be17b2f9682276ab091fe4d2e5cda",
   "schema_version": "1.0",
   "seeds": [
     20260718,
@@ -484,43 +484,43 @@
   "sources": [
     {
       "path": "src/actionshift/contracts/compound.py",
-      "sha256": "63fca1e490138c110f06de9272e18a621cadc4efbd74a54598e4d70e999e09f6"
+      "sha256": "2df8011914d5affb8629c57d95d3a10ff7321224f8af19dd91b1b05fbd3e9e69"
     },
     {
       "path": "src/actionshift/contracts/transforms.py",
-      "sha256": "d15cb8006026b732c015f782be3a1f7e25df17f68f5d83da7d550bd94298b968"
+      "sha256": "7edebda02e1dfa732b714d1a8695a515ee5118a90cdcccdde2e2d2bcd79ac15d"
     },
     {
       "path": "src/actionshift/evaluation/challenge.py",
-      "sha256": "97e0ce41eb3392fc2fb9468fd7a0385c91212c73904bf3a6f2f9439358ac6623"
+      "sha256": "e2cea9e104564fe0a3ffe3e92527b9b29f929bc8d980298dc5035197d7675f0b"
     },
     {
       "path": "configs/evaluation/headline.yaml",
-      "sha256": "ba652879283b931cafc4c82517b016b38bd37b39fb0f781a4ed067fdfb165f11"
+      "sha256": "745accec00f748b085a9e168c81734883e834cae2d5ea0abeca764319d8d9950"
     },
     {
       "path": "configs/sprint/sources.yaml",
-      "sha256": "e6e55adcccb0367a97c0f89a3efdb1b5aec663a55926694c9e0e72059bff9c66"
+      "sha256": "3a49abe8153ccd4362b2c309f3e8687bd6cc7a3527499d0b8acb20d80bea5f69"
     },
     {
       "path": "configs/split/manifests/seen.json",
-      "sha256": "dd2170d5d34580e5f1a22b68576cf4dbb5441662e9deec83b29a08905bdbf45e"
+      "sha256": "7ae858ed40a31063de8ab28d09e767056abe09cfb5dda59512e772182874f31c"
     },
     {
       "path": "configs/split/manifests/unseen_value.json",
-      "sha256": "c06b928dfd4c34849534a8a25155d5e195e8796bbaf3a9e6285d140c91329b0d"
+      "sha256": "7a77f402ef4401b73984848e366bcc0b77accf0f647cea9012d353a48b08e486"
     },
     {
       "path": "configs/split/manifests/unseen_composition.json",
-      "sha256": "24f3f0ee097f9171deba1d67806c4ca2b41faf7acd5de36bc57d8e89d9fb00dc"
+      "sha256": "1162c6cf055d3866388ac9c5a3ba3eec7e9e0e6aa79eee2659001a627e55fa05"
     },
     {
       "path": "configs/split/manifests/long_lag.json",
-      "sha256": "c077b7c77446708192090607ca45fb67c6672ed81064191d049f228aec8899a9"
+      "sha256": "03c62046c6db163db723665a42b6be64e1c48fa6636743fa541c0c6ae17cb7a8"
     },
     {
       "path": "configs/split/manifests/task_transfer.json",
-      "sha256": "e10a6c07dd41e251cd818b8c253e7685138cf94e07a6e381b1d633e226863d6e"
+      "sha256": "15e003991c585cf210cb13df1efbd808413fe768c29715fca5e0d5f098500e10"
     }
   ],
   "status": "FROZEN"
