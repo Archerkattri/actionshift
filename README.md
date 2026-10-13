@@ -128,7 +128,7 @@ over the declared contract pool — then act on the maximum-a-posteriori contrac
 `task_transfer`. Materialized manifests make the disjointness test-enforced and reproducible.
 
 **Compound-shift challenge.** The frozen CPU protocol in
-`experiments/manifests/compound-challenge-v1.json` adds static, abrupt, gradual, recurring, and
+`experiments/manifests/compound-challenge-v2.json` adds static, abrupt, gradual, recurring, and
 outside-grammar episodes. The installed wheel includes the frozen protocol data, so its smoke and
 manifest commands run outside a source checkout. Adapter inputs omit the hidden episode seed,
 episode identifier, and outside-grammar label; both the adapter RNG and canonical action trajectory
@@ -138,6 +138,12 @@ adapters by `module:factory` without simulator-core edits. For example,
 runs the privileged oracle, no-adaptation control, and external adapter. This is an interface-level
 non-exposure boundary, not a security sandbox; it is a protocol/integration smoke, not a ManiSkill
 performance result.
+
+Version 2 rejects fractional probe flags, nonfinite action envelopes and duplicate episode seeds.
+`--continue-on-error` records failed external-adapter episodes in the planned denominator; MSE is
+reported only for completed episodes, with its separate count. The historical version 1 artifacts
+remain unchanged. Freeze new source revisions with `PYTHONPATH=src python scripts/freeze_challenge_protocol.py`
+before evaluation; changing a frozen version requires another version identifier.
 
 **Unknown-ACK fault axis (opt-in).** `UnknownAckSchedule.paired([2, 3], pair_id=...)` creates matched
 applied and held-outcome schedules for `make_task_env` or `HiddenContractWrapper`. At each registered

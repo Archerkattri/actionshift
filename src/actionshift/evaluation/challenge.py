@@ -25,7 +25,7 @@ import torch
 from actionshift.contracts.compound import CompoundShiftEpisode, generate_compound_episode
 from actionshift.contracts.transforms import ActionLag, decode_pose, encode_pose
 
-CHALLENGE_VERSION = "compound-challenge-v1"
+CHALLENGE_VERSION = "compound-challenge-v2"
 CHALLENGE_CASES: tuple[tuple[str, bool], ...] = (
     ("static", False),
     ("abrupt", False),
@@ -34,6 +34,24 @@ CHALLENGE_CASES: tuple[tuple[str, bool], ...] = (
     ("abrupt", True),
 )
 DEFAULT_CHALLENGE_SEEDS = (20260718, 20260719, 20260720)
+_PACKAGE_SOURCE_PATHS = (
+    Path("src/actionshift/contracts/compound.py"),
+    Path("src/actionshift/contracts/sampler.py"),
+    Path("src/actionshift/contracts/types.py"),
+    Path("src/actionshift/contracts/transforms.py"),
+    Path("src/actionshift/evaluation/challenge.py"),
+)
+_PROTOCOL_SOURCE_PATHS = (
+    *_PACKAGE_SOURCE_PATHS,
+    Path("scripts/freeze_challenge_protocol.py"),
+    Path("configs/evaluation/headline.yaml"),
+    Path("configs/sprint/sources.yaml"),
+    Path("configs/split/manifests/seen.json"),
+    Path("configs/split/manifests/unseen_value.json"),
+    Path("configs/split/manifests/unseen_composition.json"),
+    Path("configs/split/manifests/long_lag.json"),
+    Path("configs/split/manifests/task_transfer.json"),
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -46,6 +64,13 @@ class MethodBudget:
     max_probe_linf: float = 0.5
 
     def __post_init__(self) -> None:
+        if not all(math.isfinite(value) for value in (self.max_action_linf, self.max_probe_linf)):
+            raise ValueError("probe and action bounds must be finite")
+        if any(
+            isinstance(value, bool) or not isinstance(value, int)
+            for value in (self.episode_steps, self.max_probe_steps)
+        ):
+            raise ValueError("step budgets must be integers")
         if self.episode_steps < 8:
             raise ValueError("episode_steps must be at least eight")
         if not 0 <= self.max_probe_steps <= self.episode_steps:
@@ -185,6 +210,15 @@ def _protocol_digest(value: Mapping[str, object]) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def _validate_seeds(seeds: Sequence[int]) -> None:
+    if not seeds or any(
+        isinstance(seed, bool) or not isinstance(seed, int) or seed < 0 for seed in seeds
+    ):
+        raise ValueError("seeds must be nonempty nonnegative integers")
+    if len(set(seeds)) != len(seeds):
+        raise ValueError("episode seeds must be unique")
+
+
 def build_challenge_manifest(
     repository_root: Path,
     *,
@@ -192,32 +226,16 @@ def build_challenge_manifest(
     steps: int = 64,
 ) -> dict[str, object]:
     """Build the deterministic public protocol and pin every source it depends on."""
-    if not seeds or any(seed < 0 for seed in seeds):
-        raise ValueError("seeds must be nonempty and nonnegative")
-    source_paths = (
-        Path("src/actionshift/contracts/compound.py"),
-        Path("src/actionshift/contracts/transforms.py"),
-        Path("src/actionshift/evaluation/challenge.py"),
-        Path("configs/evaluation/headline.yaml"),
-        Path("configs/sprint/sources.yaml"),
-        Path("configs/split/manifests/seen.json"),
-        Path("configs/split/manifests/unseen_value.json"),
-        Path("configs/split/manifests/unseen_composition.json"),
-        Path("configs/split/manifests/long_lag.json"),
-        Path("configs/split/manifests/task_transfer.json"),
-    )
+    _validate_seeds(seeds)
     sources = []
-    for relative in source_paths:
+    for relative in _PROTOCOL_SOURCE_PATHS:
         absolute = repository_root / relative
         if not absolute.is_file():
             raise FileNotFoundError(absolute)
         sources.append({"path": relative.as_posix(), "sha256": _sha256(absolute)})
     budget = MethodBudget(steps, 6)
     public_episodes = _protocol_episode_records(
-        [
-            {"shift_kind": kind, "outside_grammar": outside}
-            for kind, outside in CHALLENGE_CASES
-        ],
+        [{"shift_kind": kind, "outside_grammar": outside} for kind, outside in CHALLENGE_CASES],
         seeds=seeds,
         steps=steps,
     )
@@ -228,8 +246,7 @@ def build_challenge_manifest(
         "claim_boundary": "CPU protocol smoke; not a ManiSkill performance result",
         "seeds": list(seeds),
         "cases": [
-            {"shift_kind": kind, "outside_grammar": outside}
-            for kind, outside in CHALLENGE_CASES
+            {"shift_kind": kind, "outside_grammar": outside} for kind, outside in CHALLENGE_CASES
         ],
         "budget": asdict(budget),
         "methods": [
@@ -246,13 +263,9 @@ def build_packaged_challenge_manifest(
     *, seeds: Sequence[int] = DEFAULT_CHALLENGE_SEEDS, steps: int = 64
 ) -> dict[str, object]:
     """Build the frozen protocol from wheel data when no source checkout is present."""
-    if not seeds or any(seed < 0 for seed in seeds):
-        raise ValueError("seeds must be nonempty and nonnegative")
-    if steps < 8:
-        raise ValueError("steps must be >= 8")
-    resource = resources.files("actionshift.evaluation").joinpath(
-        "data/compound-challenge-v1.json"
-    )
+    _validate_seeds(seeds)
+    MethodBudget(steps, 6)
+    resource = resources.files("actionshift.evaluation").joinpath(f"data/{CHALLENGE_VERSION}.json")
     packaged = json.loads(resource.read_text(encoding="utf-8"))
     if not isinstance(packaged, dict):
         raise ValueError("packaged challenge protocol must be a JSON object")
@@ -261,23 +274,28 @@ def build_packaged_challenge_manifest(
     if not isinstance(template, dict) or not isinstance(expected_digest, str):
         raise ValueError("packaged challenge protocol is incomplete")
 
+    package_root = Path(__file__).resolve().parents[1]
     package_sources = {
-        "src/actionshift/contracts/compound.py": Path(__file__).resolve().parents[1]
-        / "contracts"
-        / "compound.py",
-        "src/actionshift/contracts/transforms.py": Path(__file__).resolve().parents[1]
-        / "contracts"
-        / "transforms.py",
-        "src/actionshift/evaluation/challenge.py": Path(__file__).resolve(),
+        relative.as_posix(): package_root / relative.relative_to("src/actionshift")
+        for relative in _PACKAGE_SOURCE_PATHS
     }
     sources = template.get("sources")
     if not isinstance(sources, list):
         raise ValueError("packaged challenge protocol lacks source hashes")
+    source_names = [source.get("path") for source in sources if isinstance(source, dict)]
+    if sorted(source_names, key=str) != sorted(path.as_posix() for path in _PROTOCOL_SOURCE_PATHS):
+        raise ValueError("packaged challenge protocol must pin every required source exactly once")
     for source in sources:
         if not isinstance(source, dict):
             raise ValueError("packaged challenge protocol has a malformed source record")
         relative = source.get("path")
         expected_source_hash = source.get("sha256")
+        if (
+            not isinstance(expected_source_hash, str)
+            or len(expected_source_hash) != 64
+            or any(character not in "0123456789abcdef" for character in expected_source_hash)
+        ):
+            raise ValueError("packaged challenge protocol has an invalid source hash")
         packaged_path = package_sources.get(relative) if isinstance(relative, str) else None
         if packaged_path is not None and (
             not packaged_path.is_file() or _sha256(packaged_path) != expected_source_hash
@@ -298,6 +316,19 @@ def build_packaged_challenge_manifest(
     base_steps = budget_value.get("episode_steps")
     if isinstance(base_steps, bool) or not isinstance(base_steps, int):
         raise ValueError("packaged challenge protocol has an invalid episode budget")
+    _validate_seeds(base_seeds)
+    if (
+        base.get("challenge_version") != CHALLENGE_VERSION
+        or cases != [
+            {"shift_kind": kind, "outside_grammar": outside} for kind, outside in CHALLENGE_CASES
+        ]
+        or budget_value != asdict(MethodBudget(base_steps, 6))
+        or base.get("methods") != [
+            {**asdict(spec), "privileges": list(spec.privileges)}
+            for spec in challenge_method_specs()
+        ]
+    ):
+        raise ValueError("packaged challenge protocol differs from the runner cases or envelopes")
     base["episodes"] = _protocol_episode_records(cases, seeds=base_seeds, steps=base_steps)
     if _protocol_digest(base) != expected_digest:
         raise ValueError("packaged challenge protocol digest does not match its frozen template")
@@ -323,9 +354,7 @@ def verify_challenge_manifest(manifest: Mapping[str, object]) -> None:
         raise ValueError("challenge manifest digest mismatch")
 
 
-def write_challenge_manifest(
-    path: Path, repository_root: Path | None = None
-) -> dict[str, object]:
+def write_challenge_manifest(path: Path, repository_root: Path | None = None) -> dict[str, object]:
     manifest = (
         build_challenge_manifest(repository_root)
         if repository_root is not None
@@ -358,9 +387,13 @@ def _validated_action(
 ) -> torch.Tensor:
     if not isinstance(decision, ChallengeDecision):
         raise TypeError("adapter.act must return ChallengeDecision")
+    if not isinstance(decision.probe, bool):
+        raise TypeError("adapter probe flag must be bool")
     if len(decision.raw_action) != dimension:
         raise ValueError("adapter action dimension mismatch")
     action = torch.tensor(decision.raw_action, dtype=torch.float64)
+    if action.ndim != 1:
+        raise ValueError("adapter action must be a one-dimensional vector")
     if not torch.isfinite(action).all():
         raise ValueError("adapter action must be finite")
     bound = budget.max_probe_linf if decision.probe else budget.max_action_linf
@@ -475,15 +508,14 @@ def run_challenge(
     steps: int = 64,
     adapter_seed: int = 0,
     action_seed: int = 0,
+    continue_on_error: bool = False,
 ) -> dict[str, object]:
-    if not seeds or any(seed < 0 for seed in seeds):
-        raise ValueError("seeds must be nonempty and nonnegative")
+    _validate_seeds(seeds)
     if adapter_seed < 0:
         raise ValueError("adapter_seed must be nonnegative")
     if action_seed < 0:
         raise ValueError("action_seed must be nonnegative")
-    if steps < 8:
-        raise ValueError("steps must be >= 8")
+    MethodBudget(steps, 6)
     specs = {spec.name: spec for spec in challenge_method_specs()}
     if method == "external":
         if factory is None:
@@ -502,20 +534,41 @@ def run_challenge(
         for seed in seeds
         for kind, outside in CHALLENGE_CASES
     ]
-    records = [
-        _run_episode(
-            episode,
-            method=method,
-            factory=factory,
-            max_probe_steps=max_probes,
-            adapter_seed=adapter_seed + index,
-            action_seed=action_seed,
-        )
-        for index, episode in enumerate(episodes)
-    ]
+    records: list[dict[str, object]] = []
+    for index, episode in enumerate(episodes):
+        try:
+            record = _run_episode(
+                episode,
+                method=method,
+                factory=factory,
+                max_probe_steps=max_probes,
+                adapter_seed=adapter_seed + index,
+                action_seed=action_seed,
+            )
+        except Exception as error:
+            if not continue_on_error:
+                raise
+            # Keep the planned denominator. Exception text may contain private
+            # evaluator details; the public report records only its type.
+            record = {
+                "episode_id": episode.episode_id,
+                "seed": episode.seed,
+                "shift_kind": episode.shift_kind,
+                "outside_grammar": episode.outside_grammar,
+                "status": "FAILED",
+                "error_type": type(error).__name__,
+                "post_lag_success": False,
+                "post_lag_mean_squared_error": None,
+            }
+        else:
+            record["status"] = "COMPLETED"
+        records.append(record)
     successes = 0
     post_lag_mse_total = 0.0
+    scored_episode_count = 0
     for record in records:
+        if record["status"] == "FAILED":
+            continue
         success = record["post_lag_success"]
         post_lag_mse = record["post_lag_mean_squared_error"]
         if not isinstance(success, bool):
@@ -524,6 +577,7 @@ def run_challenge(
             raise TypeError("challenge episode MSE must be numeric")
         successes += int(success)
         post_lag_mse_total += float(post_lag_mse)
+        scored_episode_count += 1
     return {
         "schema_version": "1.0",
         "challenge_version": CHALLENGE_VERSION,
@@ -534,8 +588,12 @@ def run_challenge(
         "adapter_rng_seed": adapter_seed,
         "action_seed": action_seed,
         "episode_count": len(records),
+        "failed_episodes": len(records) - scored_episode_count,
+        "scored_episode_count": scored_episode_count,
         "successes": successes,
-        "mean_post_lag_mse": post_lag_mse_total / len(records),
+        "mean_post_lag_mse": (
+            post_lag_mse_total / scored_episode_count if scored_episode_count else None
+        ),
         "episodes": records,
     }
 
@@ -549,6 +607,7 @@ def run_reference_smoke(
     external_reference: str | None = None,
     adapter_seed: int = 0,
     action_seed: int = 0,
+    continue_on_error: bool = False,
 ) -> dict[str, object]:
     if repository_root is None:
         required_files = (
@@ -581,6 +640,7 @@ def run_reference_smoke(
                 steps=steps,
                 adapter_seed=adapter_seed,
                 action_seed=action_seed,
+                continue_on_error=continue_on_error,
             )
         )
     report: dict[str, object] = {

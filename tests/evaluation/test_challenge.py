@@ -7,6 +7,7 @@ import pytest
 
 from actionshift.evaluation.challenge import (
     CHALLENGE_CASES,
+    CHALLENGE_VERSION,
     ChallengeDecision,
     ChallengeObservation,
     ChallengeTransition,
@@ -59,7 +60,7 @@ def test_frozen_manifest_is_complete_deterministic_and_self_verifying() -> None:
 def test_packaged_protocol_matches_the_frozen_repository_protocol() -> None:
     root = Path(__file__).resolve().parents[2]
     frozen = json.loads(
-        (root / "experiments/manifests/compound-challenge-v1.json").read_text(
+        (root / f"experiments/manifests/{CHALLENGE_VERSION}.json").read_text(
             encoding="utf-8"
         )
     )
