@@ -1,5 +1,8 @@
 # Rotation v2: de-degenerating the frame axis of the ActionShift benchmark
 
+> Historical verification note: the full-suite status below predates unit-test removal from the
+> current WIP branch; the retained integration checks are listed in the README.
+
 Run date: 2026-07-21 UTC. GPU 1 only (`CUDA_VISIBLE_DEVICES=1`). Frozen Gate-0/1 PPO
 backbones. Seed 20260718 (belief unseen cells promoted to 20260718/19/20). Runners:
 `experiments/run_rotation_v2_parity.py` (frame=tool ceiling cells),

@@ -1,5 +1,8 @@
 # DualABI: a probe-efficiency Pareto win over the entropy champion
 
+> Historical test note: the full-suite count below predates unit-test removal. The WIP branch keeps
+> CLI, wrapper, challenge-runner, provenance, and unknown-ACK integration checks; see the README.
+
 Run date: 2026-07-21 UTC. Method: `src/actionshift/adaptation/dualabi_adapter.py`
 (`DualABIProbeAdapter`). Runner: `experiments/run_adaptation_slice.py --method dualabi`;
 analysis: `experiments/analyze_adaptation.py`; artifacts:

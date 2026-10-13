@@ -1,8 +1,9 @@
 # PLUG-AND-VERIFY: the `actionshift-selftest` startup check
 
 Run date: 2026-07-21 UTC. Tool: `actionshift-selftest` (console entry ->
-`actionshift.selftest.cli:main`); module: `src/actionshift/selftest/`; tests:
-`tests/test_selftest.py`; user docs: the `actionshift-selftest` section of `README.md`.
+`actionshift.selftest.cli:main`); module: `src/actionshift/selftest/`; historical
+tests (removed from the current review branch): `tests/test_selftest.py`; user docs:
+the `actionshift-selftest` section of `README.md`.
 
 This packages the action-interface pair's load-bearing finding — a bounded probe
 phase identifies a hidden action contract (`reports/adaptation_tournament.md`) —
@@ -95,8 +96,9 @@ PASS/MISMATCH, the misspecification guard fires and the tool abstains.
 ## Verdict-logic guarantees (fail-closed)
 
 `decide_verdict` is a pure function of `(IdentificationResult, expected, floor,
-misspec_ratio)`. The guarantees, each covered by a unit test in
-`tests/test_selftest.py`:
+misspec_ratio)`. During the earlier implementation, the guarantees below were
+covered by `tests/test_selftest.py`; that unit suite is not shipped on the current
+review branch:
 
 1. **No false PASS on a bad fit.** If the MAP hypothesis fits the responses worse
    than `misspec_ratio` x the calibrated noise (default 4.0), the verdict is
@@ -118,7 +120,7 @@ misspec_ratio)`. The guarantees, each covered by a unit test in
 The through-line: the tool certifies PASS only when it can, flags MISMATCH only on
 evidence it trusts, and otherwise abstains. It never guesses.
 
-## Tests
+## Historical test evidence (not shipped on the current review branch)
 
 `tests/test_selftest.py` — **20 assertions, all green** (CPU, ~2.3 s, no GPU):
 

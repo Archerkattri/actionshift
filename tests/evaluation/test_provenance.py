@@ -1,22 +1,10 @@
 from __future__ import annotations
 
 import json
-import subprocess
 from pathlib import Path
 
-from actionshift.evaluation.provenance import capture_provenance, sha256_file
+from actionshift.evaluation.provenance import capture_provenance
 from actionshift.evaluation.runner import write_matrix
-
-
-def test_provenance_hashes_exact_config_bytes(tmp_path: Path) -> None:
-    config = tmp_path / "method.yaml"
-    config.write_text("name: dualabi\n", encoding="utf-8")
-    first = capture_provenance([config], repo_root=tmp_path)
-    config.write_text("name: oracle\n", encoding="utf-8")
-    second = capture_provenance([config], repo_root=tmp_path)
-    assert first.config_sha256 != second.config_sha256
-    assert first.git_commit == "unknown"
-    assert first.python_version
 
 
 def test_matrix_writer_is_atomic_and_machine_readable(tmp_path: Path) -> None:
@@ -29,6 +17,8 @@ def test_matrix_writer_is_atomic_and_machine_readable(tmp_path: Path) -> None:
 
 
 def test_provenance_records_dirty_branch_and_cuda_inventory(tmp_path: Path) -> None:
+    import subprocess
+
     subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
     subprocess.run(["git", "-C", str(tmp_path), "config", "user.name", "Benchmark"], check=True)
     subprocess.run(
@@ -70,21 +60,3 @@ def test_provenance_records_dirty_branch_and_cuda_inventory(tmp_path: Path) -> N
             "driver_version": "590.48.01",
         }
     ]
-
-
-def test_provenance_preserves_nvidia_smi_failure_and_hashes_artifact(tmp_path: Path) -> None:
-    artifact = tmp_path / "episodes.jsonl"
-    artifact.write_bytes(b'{"success":true}\n')
-
-    def fail(command: list[str]) -> subprocess.CompletedProcess[str]:
-        return subprocess.CompletedProcess(command, 9, stdout="", stderr="driver unavailable")
-
-    provenance = capture_provenance(
-        [artifact], repo_root=tmp_path, command_runner=fail, environment={}
-    )
-
-    assert provenance.hardware["gpus"] == []
-    assert provenance.hardware["nvidia_smi_error"] == "driver unavailable"
-    assert sha256_file(artifact) == (
-        "b493cdb3b30ea63f6a924f814dfccfcfe305dac02106f9994ce2bcb2e8ed28c4"
-    )

@@ -21,8 +21,9 @@ Implementation (both proven inductive biases kept):
 - a RUNNING ridge least-squares estimate of the lagged joint-regression maps, accumulated
   incrementally over the whole episode so far (the `X^T X` / `X^T Y` Gram accumulators of
   `training.history_features`, but growing step by step instead of over a fixed window, so the maps
-  sharpen monotonically). A unit test asserts this running statistic reproduces `history_features`
-  bit-for-bit when fed the same window;
+  sharpen monotonically). The former unit suite asserted this running statistic reproduced
+  `history_features` bit-for-bit for a shared window; that suite is not shipped on the current
+  review branch;
 - the permutation-equivariant head from `training.OsiRegressor` reading those running maps (the
   equivariant design was proven necessary — flat MLPs memorize permutations and generalize at chance);
 - a GRU carried across the episode that refines the flags (target/frame/gripper) and lag heads from
