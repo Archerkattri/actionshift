@@ -10,6 +10,7 @@ from torch import Tensor
 
 from actionshift.contracts.types import ActionContract
 from actionshift.envs.factory import make_hidden_contract_env
+from actionshift.envs.unknown_ack import UnknownAckRecorder, UnknownAckSchedule
 from actionshift.envs.wrapper import HiddenContractWrapper, OracleRecorder
 
 
@@ -51,6 +52,8 @@ def make_task_env(
     contract: ActionContract,
     *,
     oracle_recorder: OracleRecorder | None = None,
+    unknown_ack_schedule: UnknownAckSchedule | None = None,
+    unknown_ack_recorder: UnknownAckRecorder | None = None,
     **environment_kwargs: Any,
 ) -> HiddenContractWrapper:
     """Create a registered task with the benchmark's shared action interface."""
@@ -66,5 +69,7 @@ def make_task_env(
         task.environment_id,
         contract,
         oracle_recorder=oracle_recorder,
+        unknown_ack_schedule=unknown_ack_schedule,
+        unknown_ack_recorder=unknown_ack_recorder,
         **kwargs,
     )

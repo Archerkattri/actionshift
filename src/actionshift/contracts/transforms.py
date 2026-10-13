@@ -192,6 +192,7 @@ class CompleteActionDecoder:
         *,
         ee_rotation: Tensor,
         reset_mask: Tensor | None = None,
+        target_update_mask: Tensor | None = None,
     ) -> Tensor:
         if raw_action.shape != (self.batch_size, 7):
             raise ValueError("raw_action must be batch_size by seven")
@@ -202,6 +203,7 @@ class CompleteActionDecoder:
                 raise ValueError("reset_mask must contain one value per environment")
             mask = reset_mask.to(device=raw_action.device, dtype=torch.bool).unsqueeze(-1)
             self._target = torch.where(mask, torch.zeros_like(self._target), self._target)
+        previous_target = self._target.clone()
         canonical, self._target = decode_complete_action(
             raw_action,
             self.contract,
@@ -210,6 +212,13 @@ class CompleteActionDecoder:
             workspace_lower=self.workspace_lower,
             workspace_upper=self.workspace_upper,
         )
+        if target_update_mask is not None:
+            if target_update_mask.shape != (self.batch_size,):
+                raise ValueError("target_update_mask must contain one value per environment")
+            accepted = target_update_mask.to(
+                device=raw_action.device, dtype=torch.bool
+            ).unsqueeze(-1)
+            self._target = torch.where(accepted, self._target, previous_target)
         return self._lag.step(canonical, reset_mask=reset_mask)
 
 
