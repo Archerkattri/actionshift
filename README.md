@@ -964,8 +964,8 @@ repository does not redistribute them. Dataset and simulator assets retain their
 
 ## Current release status
 
-The current checkout has a real CPU ManiSkill/SAPIEN smoke covering
-PegInsertionSide, PickCube, PullCube, PushCube and StackCube, with 320 tests
-passing and 10 skips. Compound-shift contracts and provenance checks are
-closed. Learned-policy success, matched-budget controls, GPU runs and the final
+The committed CPU ManiSkill/SAPIEN smoke report covers PegInsertionSide, PickCube, PullCube, PushCube
+and StackCube. The current retained integration suite passes 26 checks; five optional ManiSkill task
+checks skip when that extra is absent. The installed wheel and compound-challenge package workflow
+pass CPU smoke checks. Learned-policy success, matched-budget controls, GPU runs and the final
 challenge matrix remain unmeasured.

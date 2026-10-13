@@ -175,11 +175,9 @@ def load_adapter_factory(reference: str) -> AdapterFactory:
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    # Frozen source hashes must match across Windows CRLF and Linux/macOS LF checkouts.
+    contents = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(contents).hexdigest()
 
 
 def _protocol_digest(value: Mapping[str, object]) -> str:

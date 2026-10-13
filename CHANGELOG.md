@@ -12,6 +12,7 @@ All notable changes to this project are documented here. The format is based on
   manifest and smoke workflows outside a source checkout.
 - Keep the hidden episode seed and outside-grammar label out of adapter inputs;
   seed adapter randomness independently.
+- Normalize protocol source hashes across CRLF and LF checkouts.
 
 ### Changed
 
