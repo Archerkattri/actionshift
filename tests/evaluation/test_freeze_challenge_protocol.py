@@ -1,10 +1,16 @@
 """Frozen protocol output handling stays explicit and checkout-bounded."""
 
+import importlib.util
 from pathlib import Path
 
 import pytest
 
-from scripts.freeze_challenge_protocol import write_frozen_outputs
+SCRIPT_PATH = Path(__file__).resolve().parents[2] / "scripts" / "freeze_challenge_protocol.py"
+SPEC = importlib.util.spec_from_file_location("freeze_challenge_protocol", SCRIPT_PATH)
+assert SPEC is not None and SPEC.loader is not None
+FREEZER = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(FREEZER)
+write_frozen_outputs = FREEZER.write_frozen_outputs
 
 
 def test_freeze_refuses_changed_artifacts_without_explicit_refresh(tmp_path: Path):
