@@ -21,7 +21,7 @@ def main() -> int:
     summary.add_argument("output", type=Path)
     challenge_manifest = subparsers.add_parser("challenge-manifest")
     challenge_manifest.add_argument("output", type=Path)
-    challenge_manifest.add_argument("--repository-root", type=Path, default=Path.cwd())
+    challenge_manifest.add_argument("--repository-root", type=Path)
     challenge_smoke = subparsers.add_parser("challenge-smoke")
     challenge_smoke.add_argument("output", type=Path)
     challenge_smoke.add_argument("--steps", type=int, default=64)
@@ -29,6 +29,18 @@ def main() -> int:
         "--seeds", type=int, nargs="+", default=[20260718, 20260719, 20260720]
     )
     challenge_smoke.add_argument("--adapter", help="optional external module:factory")
+    challenge_smoke.add_argument(
+        "--adapter-seed",
+        type=int,
+        default=0,
+        help="adapter RNG seed, independent of the hidden episode seed",
+    )
+    challenge_smoke.add_argument(
+        "--action-seed",
+        type=int,
+        default=0,
+        help="seed for the canonical action trajectory, independent of the hidden episode seed",
+    )
     arguments = parser.parse_args()
     try:
         if arguments.command == "matrix":
@@ -46,6 +58,8 @@ def main() -> int:
                 seeds=arguments.seeds,
                 steps=arguments.steps,
                 external_reference=arguments.adapter,
+                adapter_seed=arguments.adapter_seed,
+                action_seed=arguments.action_seed,
             )
             methods = report.get("methods")
             if not isinstance(methods, list):

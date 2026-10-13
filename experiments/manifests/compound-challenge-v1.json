@@ -474,7 +474,7 @@
       ]
     }
   ],
-  "protocol_sha256": "591c9adf2069be6bd2a37b9e5497602265a1bfb9885a9b89f4182c534e01a2e9",
+  "protocol_sha256": "6c672195e82771cd0a81ecac1d98bfe3c0227addfd0de95b7ecb85d0b08fd588",
   "schema_version": "1.0",
   "seeds": [
     20260718,
@@ -484,15 +484,15 @@
   "sources": [
     {
       "path": "src/actionshift/contracts/compound.py",
-      "sha256": "63fca1e490138c110f06de9272e18a621cadc4efbd74a54598e4d70e999e09f6"
+      "sha256": "2df8011914d5affb8629c57d95d3a10ff7321224f8af19dd91b1b05fbd3e9e69"
     },
     {
       "path": "src/actionshift/contracts/transforms.py",
-      "sha256": "d15cb8006026b732c015f782be3a1f7e25df17f68f5d83da7d550bd94298b968"
+      "sha256": "844f0f135a5e866b3dc69b47ba70a1c4b7f4aabad4f0eafd3868ee0978b4a04b"
     },
     {
       "path": "src/actionshift/evaluation/challenge.py",
-      "sha256": "97e0ce41eb3392fc2fb9468fd7a0385c91212c73904bf3a6f2f9439358ac6623"
+      "sha256": "d33f52769f76209879ca06490502ddb696546a1b655420d293507e4d497cd56b"
     },
     {
       "path": "configs/evaluation/headline.yaml",

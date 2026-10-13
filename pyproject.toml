@@ -42,6 +42,9 @@ maniskill = ["gymnasium>=1.0", "mani-skill>=3", "numpy>=1.26"]
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+"actionshift.evaluation" = ["data/*.json"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--strict-markers --strict-config --import-mode=importlib"

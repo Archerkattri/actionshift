@@ -129,11 +129,15 @@ over the declared contract pool — then act on the maximum-a-posteriori contrac
 
 **Compound-shift challenge.** The frozen CPU protocol in
 `experiments/manifests/compound-challenge-v1.json` adds static, abrupt, gradual, recurring, and
-outside-grammar episodes. Its public adapter ABI never carries a contract or contract hash, enforces
-the same episode/action envelope plus declared probe budgets, and accepts third-party adapters by
-`module:factory` without simulator-core edits. `actionshift-evaluate challenge-smoke OUTPUT.json`
-runs the privileged oracle and no-adaptation controls; add `--adapter package.module:factory` to check
-an external adapter. This is a protocol and integration smoke, not a ManiSkill performance result.
+outside-grammar episodes. The installed wheel includes the frozen protocol data, so its smoke and
+manifest commands run outside a source checkout. Adapter inputs omit the hidden episode seed,
+episode identifier, and outside-grammar label; both the adapter RNG and canonical action trajectory
+use independent seeds. The runner enforces action and declared probe budgets and accepts third-party
+adapters by `module:factory` without simulator-core edits. For example,
+`actionshift-evaluate challenge-smoke OUTPUT.json --adapter package.module:factory --adapter-seed 17 --action-seed 23`
+runs the privileged oracle, no-adaptation control, and external adapter. This is an interface-level
+non-exposure boundary, not a security sandbox; it is a protocol/integration smoke, not a ManiSkill
+performance result.
 
 **Unknown-ACK fault axis (opt-in).** `UnknownAckSchedule.paired([2, 3], pair_id=...)` creates matched
 applied and held-outcome schedules for `make_task_env` or `HiddenContractWrapper`. At each registered
@@ -235,8 +239,11 @@ The failure is interface-semantic, not policy-class-specific. (Round 12)
 
 ## Install and quickstart
 
-Python 3.11 and PyTorch 2.4+ are required. ManiSkill is optional for the CPU/package workflow and
-required for real-simulator smoke runs.
+The package declares Python 3.11+ and PyTorch 2.4+. CI covers Python 3.11 and 3.12 on Linux; the
+installed-wheel smoke and retained integration suite also pass on Python 3.12/Windows. macOS and
+newer Python runtimes are not verified here. ManiSkill is optional for the CPU/package workflow and
+required for real-simulator smoke runs. The C++ evidence-scoring backend is an optional ActionABI
+extension built separately; the core Python installation does not require a C++ compiler.
 
 This WIP branch removes unit tests while retaining release-asset, CLI, environment-wrapper,
 challenge-runner, provenance, and unknown-ACK integration checks. Historical full-suite counts in the
