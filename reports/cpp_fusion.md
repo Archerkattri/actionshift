@@ -1,5 +1,8 @@
 # C++-in-the-loop fusion: ActionABI's scoring core as an ActionShift identification backend
 
+> Historical test note: the full-suite counts below predate unit-test removal. The WIP branch keeps
+> CLI, wrapper, challenge-runner, provenance, and unknown-ACK integration checks; see the README.
+
 Run date: 2026-07-21 UTC. This report documents the systems fusion of the two
 projects: ActionABI's (post-`scorer_fixes`) C++20 evidence-scoring core is exposed
 through a pybind11 binding and wired into ActionShift's factorized-grammar belief

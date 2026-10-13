@@ -1,5 +1,8 @@
 # Third task: restoring three-task generality with PullCube-v1
 
+> Historical verification note: the full-suite count below predates unit-test removal from the
+> current WIP branch; the retained integration checks are listed in the README.
+
 Run date: 2026-07-21 UTC
 Seeds: `20260718`, `20260719`, `20260720`
 Hardware: NVIDIA RTX 5090, GPU 3 only (`CUDA_VISIBLE_DEVICES=3`)

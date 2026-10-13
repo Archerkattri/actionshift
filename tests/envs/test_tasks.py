@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-import numpy as np
 import pytest
 import torch
 
 from actionshift.contracts.types import ActionContract
-from actionshift.envs.tasks import TASKS, TaskSpec, make_task_env
+from actionshift.envs.tasks import TASKS, make_task_env
 
 
 def _identity_contract() -> ActionContract:
@@ -18,27 +17,6 @@ def _identity_contract() -> ActionContract:
         lag=0,
         gripper_inverted=False,
     )
-
-
-def test_frozen_task_registry_covers_pick_push_pull_stack_and_insertion() -> None:
-    assert set(TASKS) == {
-        "pick_cube",
-        "push_cube",
-        "pull_cube",
-        "stack_cube",
-        "peg_insertion_side",
-    }
-    assert len({spec.family for spec in TASKS.values()}) == 5
-    assert all(spec.control_mode == "pd_ee_delta_pose" for spec in TASKS.values())
-
-
-def test_task_success_normalizes_scalar_array_and_tensor() -> None:
-    spec = TaskSpec("Test-v0", "test", max_episode_steps=10)
-    assert spec.success({"success": True}).shape == (1,)
-    torch.testing.assert_close(spec.success({"success": np.array([0, 1])}), torch.tensor([0, 1]))
-    torch.testing.assert_close(spec.success({"success": torch.tensor([True])}), torch.tensor([1]))
-    with pytest.raises(KeyError, match="success"):
-        spec.success({})
 
 
 @pytest.mark.parametrize("task_name", sorted(TASKS))

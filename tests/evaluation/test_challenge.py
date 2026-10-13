@@ -137,8 +137,6 @@ def test_probe_and_amplitude_budgets_are_enforced() -> None:
 
 
 def test_external_factory_loads_by_module_reference() -> None:
-    factory = load_adapter_factory(
-        "actionshift.evaluation.challenge:identity_adapter_factory"
-    )
+    factory = load_adapter_factory("actionshift.evaluation.challenge:identity_adapter_factory")
     report = run_challenge(method="external", factory=factory, seeds=(2,), steps=16)
     assert report["episode_count"] == len(CHALLENGE_CASES)

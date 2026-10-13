@@ -135,6 +135,29 @@ the same episode/action envelope plus declared probe budgets, and accepts third-
 runs the privileged oracle and no-adaptation controls; add `--adapter package.module:factory` to check
 an external adapter. This is a protocol and integration smoke, not a ManiSkill performance result.
 
+**Unknown-ACK fault axis (opt-in).** `UnknownAckSchedule.paired([2, 3], pair_id=...)` creates matched
+applied and held-outcome schedules for `make_task_env` or `HiddenContractWrapper`. At each registered
+step both arms expose only `action_acknowledgement="unknown"`; the held arm sends a zero six-channel
+arm command and preserves the gripper command. For stateful target contracts, a held command does not
+advance the wrapper's commanded-target tracker. Exact outcomes belong in `UnknownAckRecorder` or the
+schedule's private manifest, never policy observations. The first version requires zero contract lag
+so delivery ambiguity is isolated from delayed-action semantics. Choose a target-relative ManiSkill
+controller through `TaskSpec.control_mode`; this facility does not change the task's action ABI. This is
+a fault-injection/evaluation facility, not evidence of network packet loss, robot safety, or improved
+task success. The paired-state and stateful-target gap was raised by
+[Zhibo Zhang in issue #1](https://github.com/Archerkattri/actionshift/issues/1) and
+[issue #2](https://github.com/Archerkattri/actionshift/issues/2); thanks to him for the focused
+benchmark suggestions.
+
+The issue-reported ManiSkill/PhysX results motivate keeping this axis separate from the existing
+contract tournament: on one held-out StackCube cohort, the source policy scored 28/32, a matched
+achieved-pose-memory substitute 0/32, and target-memory-aware control 30/32 ([issue #1](https://github.com/Archerkattri/actionshift/issues/1)).
+On a separate paired 64-state unknown-ACK cohort, whole-history evidence and a task-ID query route both
+scored 58/64, while using 39 versus 57 privileged target reads; fixed readback also scored 58/64 using
+64 reads ([issue #2](https://github.com/Archerkattri/actionshift/issues/2)). These are Zhibo's author-run
+results, not ActionShift runs or an independent replication; the read-count result is not a task-success
+improvement or a safety claim.
+
 **Tasks.** Four competence-gated ManiSkill tasks — PickCube-v1, PushCube-v1, PullCube-v1,
 StackCube-v1. PegInsertionSide-v1 is honestly **excluded** on backbone competence (0/100 at the full
 official 75M-step budget; see `reports/peg_retry.md`).
@@ -212,8 +235,12 @@ The failure is interface-semantic, not policy-class-specific. (Round 12)
 
 ## Install and quickstart
 
-Python 3.11 and PyTorch 2.4+ are required. ManiSkill is optional for unit tests but required for the
-real simulator smokes.
+Python 3.11 and PyTorch 2.4+ are required. ManiSkill is optional for the CPU/package workflow and
+required for real-simulator smoke runs.
+
+This WIP branch removes unit tests while retaining release-asset, CLI, environment-wrapper,
+challenge-runner, provenance, and unknown-ACK integration checks. Historical full-suite counts in the
+research reports describe earlier revisions, not the current test surface.
 
 ```bash
 python -m venv .venv
@@ -222,7 +249,7 @@ python -m venv .venv
 # static gates
 .venv/bin/ruff check src tests experiments
 .venv/bin/mypy src
-.venv/bin/pytest -q
+.venv/bin/pytest -q tests
 
 # validate a frozen split and materialize the evaluation matrix (one example slice)
 .venv/bin/actionshift-validate split configs/split/unseen_composition.yaml
@@ -666,11 +693,12 @@ python -m venv .venv
 .venv/bin/pip install -e '.[dev,maniskill]'
 .venv/bin/ruff check src tests
 .venv/bin/mypy src
-.venv/bin/pytest -q
+.venv/bin/pytest -q tests
 ```
 
-Tests that import ManiSkill skip when the optional dependency is absent. A release verification must
-install it and observe three real-task smoke cases, not three skips.
+The retained package integration checks do not depend on ManiSkill. The optional
+`tests/envs/test_tasks.py` cases and standalone `actionshift-smoke` command are the real-simulator
+checks; release verification must install the ManiSkill extra and observe real task steps, not skips.
 
 ### Frozen splits and matrix
 

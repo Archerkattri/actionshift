@@ -92,15 +92,32 @@ def paired_comparisons(slices: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 candidate_values: list[bool] = []
                 baseline_values: list[bool] = []
                 seeds_used = []
+                per_seed_descriptive = {}
                 for seed in (20260718, 20260719, 20260720):
                     left = indexed.get((task, candidate, split, seed))
                     right = indexed.get((task, baseline, split, seed))
                     if left is None or right is None:
                         continue
                     shared = sorted(set(left) & set(right))
-                    candidate_values.extend(left[pair] for pair in shared)
-                    baseline_values.extend(right[pair] for pair in shared)
+                    if not shared:
+                        continue
+                    candidate_seed = [left[pair] for pair in shared]
+                    baseline_seed = [right[pair] for pair in shared]
+                    candidate_values.extend(candidate_seed)
+                    baseline_values.extend(baseline_seed)
                     seeds_used.append(seed)
+                    per_seed_descriptive[str(seed)] = {
+                        "matched_pairs": len(shared),
+                        "candidate_success_rate": sum(candidate_seed) / len(shared),
+                        "baseline_success_rate": sum(baseline_seed) / len(shared),
+                        "paired_difference": sum(
+                            candidate - baseline
+                            for candidate, baseline in zip(
+                                candidate_seed, baseline_seed, strict=True
+                            )
+                        )
+                        / len(shared),
+                    }
                 if not candidate_values:
                     continue
                 interval = paired_success_difference(candidate_values, baseline_values)
@@ -112,6 +129,7 @@ def paired_comparisons(slices: list[dict[str, Any]]) -> list[dict[str, Any]]:
                         "baseline": baseline,
                         "seeds": seeds_used,
                         "three_seed": len(seeds_used) >= 3,
+                        "per_seed_descriptive": per_seed_descriptive,
                         **asdict(interval),
                         "significant_95": interval.lower > 0 or interval.upper < 0,
                     }

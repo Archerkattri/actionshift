@@ -159,9 +159,7 @@ def test_wrapper_uses_complete_six_dof_and_named_gripper_semantics() -> None:
     )
     wrapped.reset()
 
-    observation, *_ = wrapped.step(
-        torch.tensor([[1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5]])
-    )
+    observation, *_ = wrapped.step(torch.tensor([[1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.5]]))
 
     torch.testing.assert_close(
         observation["state"], torch.tensor([[0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -0.5]])

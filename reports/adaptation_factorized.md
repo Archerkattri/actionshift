@@ -1,5 +1,8 @@
 # Full-grammar factorized belief: grammar knowledge without the pool
 
+> Historical report: test paths and unit-test results below describe the pre-removal revision.
+> Those unit tests are no longer shipped on the current WIP branch.
+
 Run date: 2026-07-21 UTC. Method: `src/actionshift/adaptation/factorized_grammar.py`;
 runner `experiments/run_factorized_slice.py`; tests `tests/test_adaptation_factorized.py`;
 artifacts `artifacts/adaptation/factorized_slices/` (hash-addressed per-contract episode JSONL +

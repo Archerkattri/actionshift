@@ -419,11 +419,29 @@ def run_challenge(
 def run_reference_smoke(
     path: Path,
     *,
+    repository_root: Path | None = None,
     seeds: Sequence[int] = DEFAULT_CHALLENGE_SEEDS,
     steps: int = 64,
     external_reference: str | None = None,
 ) -> dict[str, object]:
-    repository_root = Path(__file__).resolve().parents[3]
+    if repository_root is None:
+        required_files = (
+            Path("src/actionshift/evaluation/challenge.py"),
+            Path("configs/evaluation/headline.yaml"),
+        )
+        repository_root = next(
+            (
+                candidate
+                for candidate in (Path.cwd(), *Path.cwd().parents)
+                if all((candidate / relative).is_file() for relative in required_files)
+            ),
+            None,
+        )
+        if repository_root is None:
+            raise FileNotFoundError(
+                "run_reference_smoke needs an ActionShift checkout root; "
+                "pass repository_root or run it from inside the checkout"
+            )
     protocol = build_challenge_manifest(repository_root, seeds=seeds, steps=steps)
     methods = [
         run_challenge(method="oracle", seeds=seeds, steps=steps),
